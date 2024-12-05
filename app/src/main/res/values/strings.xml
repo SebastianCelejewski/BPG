@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Boli Pocia Główka</string>
+    <string name="label_button_measurement_add">Dodaj</string>
+    <string name="title_activity_measurement_list">Lista pomiarów</string>
+    <string name="title_activity_measurement_add">Dodaj pomiar</string>
+</resources>
