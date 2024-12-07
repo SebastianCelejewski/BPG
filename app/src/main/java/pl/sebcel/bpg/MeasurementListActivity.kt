@@ -24,8 +24,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import dagger.hilt.android.AndroidEntryPoint
+import pl.sebcel.bpg.ui.mymodel.MyModelScreen
 import pl.sebcel.bpg.ui.theme.BPGTheme
 
+@AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +36,7 @@ class MeasurementListActivity : ComponentActivity() {
         setContent {
             BPGTheme {
                 MeasurementList()
+                MyModelScreen()
             }
         }
     }
