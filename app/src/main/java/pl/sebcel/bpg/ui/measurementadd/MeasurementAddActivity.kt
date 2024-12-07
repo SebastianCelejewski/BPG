@@ -1,4 +1,4 @@
-package pl.sebcel.bpg
+package pl.sebcel.bpg.ui.measurementadd
 
 import android.content.Intent
 import android.os.Bundle
@@ -42,11 +42,18 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import pl.sebcel.bpg.ui.measurementlist.MeasurementListActivity
+import pl.sebcel.bpg.R
+import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.ui.mymodel.MeasurementViewModel
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@AndroidEntryPoint
 class MeasurementAddActivity : ComponentActivity() {
 
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
@@ -79,7 +86,7 @@ class MeasurementAddActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun AddNewMeasurement() {
+    fun AddNewMeasurement(viewModel: MeasurementViewModel = hiltViewModel()) {
         Scaffold (
             topBar = {
                 TopAppBar(
@@ -97,16 +104,15 @@ class MeasurementAddActivity : ComponentActivity() {
             ) {
                 MeasurementDatePicker(modifier = Modifier.height(36.dp))
                 HeadachePicker()
-                Button(onClick = { OnAddMeasurementClick() }) {
+                Button(onClick = {
+                    viewModel.addMeasurement(Measurement(date = Date(), pain = 1, comment = "Elemele"))
+                    val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
+                        startActivity(intent)
+                    }) {
                     Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
                 }
             }
         }
-    }
-
-    private fun OnAddMeasurementClick() {
-        val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
-        startActivity(intent)
     }
 
     @Composable

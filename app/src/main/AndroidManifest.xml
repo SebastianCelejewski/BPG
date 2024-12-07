@@ -14,7 +14,7 @@
         android:name=".MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".MeasurementListActivity"
+            android:name=".ui.measurementlist.MeasurementListActivity"
             android:exported="true"
             android:label="@string/title_activity_measurement_list"
             android:theme="@style/Theme.BPG">
@@ -24,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MeasurementAddActivity"
+            android:name=".ui.measurementadd.MeasurementAddActivity"
             android:exported="false"
             android:label="@string/title_activity_measurement_add"
             android:theme="@style/Theme.BPG" />

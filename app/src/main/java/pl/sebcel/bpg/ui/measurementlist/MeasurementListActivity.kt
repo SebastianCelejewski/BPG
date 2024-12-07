@@ -1,4 +1,4 @@
-package pl.sebcel.bpg
+package pl.sebcel.bpg.ui.measurementlist
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -25,6 +24,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import pl.sebcel.bpg.R
+import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.mymodel.MeasurementScreen
 import pl.sebcel.bpg.ui.mymodel.MyModelScreen
 import pl.sebcel.bpg.ui.theme.BPGTheme
