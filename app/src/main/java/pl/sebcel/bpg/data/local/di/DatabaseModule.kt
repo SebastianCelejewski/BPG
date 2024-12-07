@@ -8,6 +8,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.sebcel.bpg.data.local.database.AppDatabase
+import pl.sebcel.bpg.data.local.database.MeasurementDao
 import pl.sebcel.bpg.data.local.database.MyModelDao
 import javax.inject.Singleton
 
@@ -21,12 +22,17 @@ class DatabaseModule {
     }
 
     @Provides
+    fun provideMeasurementDao(appDatabase: AppDatabase): MeasurementDao {
+        return appDatabase.measurementDao()
+    }
+
+    @Provides
     @Singleton
     fun provideAppDatabase(@ApplicationContext appContext: Context): AppDatabase {
         return Room.databaseBuilder(
             appContext,
             AppDatabase::class.java,
-            "MyModel"
+            "BPG"
         ).build()
     }
 }

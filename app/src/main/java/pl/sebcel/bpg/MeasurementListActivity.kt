@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import pl.sebcel.bpg.ui.mymodel.MeasurementScreen
 import pl.sebcel.bpg.ui.mymodel.MyModelScreen
 import pl.sebcel.bpg.ui.theme.BPGTheme
 
@@ -36,7 +37,6 @@ class MeasurementListActivity : ComponentActivity() {
         setContent {
             BPGTheme {
                 MeasurementList()
-                MyModelScreen()
             }
         }
     }
@@ -65,6 +65,8 @@ class MeasurementListActivity : ComponentActivity() {
                     text = "elemele-dutki",
                     modifier = Modifier.padding(innerPadding)
                 )
+                MyModelScreen()
+                MeasurementScreen()
             }
         }
     }
