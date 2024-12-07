@@ -47,6 +47,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListActivity
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.data.local.database.PainDescriptions
 import pl.sebcel.bpg.ui.mymodel.MeasurementViewModel
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.text.SimpleDateFormat
@@ -57,6 +58,7 @@ import java.util.Locale
 class MeasurementAddActivity : ComponentActivity() {
 
     private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    private val painDescriptions = PainDescriptions()
 
     @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -87,6 +89,11 @@ class MeasurementAddActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun AddNewMeasurement(viewModel: MeasurementViewModel = hiltViewModel()) {
+
+        var measurementDate by remember { mutableStateOf(Date())}
+        var pain by remember { mutableStateOf(0)}
+        var comment by remember { mutableStateOf("")}
+
         Scaffold (
             topBar = {
                 TopAppBar(
@@ -103,9 +110,11 @@ class MeasurementAddActivity : ComponentActivity() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 MeasurementDatePicker(modifier = Modifier.height(36.dp))
-                HeadachePicker()
+                HeadachePicker(onSelect = {
+                    pain = it
+                })
                 Button(onClick = {
-                    viewModel.addMeasurement(Measurement(date = Date(), pain = 1, comment = "Elemele"))
+                    viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
                     val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
                         startActivity(intent)
                     }) {
@@ -134,28 +143,32 @@ class MeasurementAddActivity : ComponentActivity() {
     }
 
     @Composable
-    fun HeadachePicker() {
-        val radioOptions = listOf("Brak bólu", "Ból lekki", "Ból średni", "Ból mocny")
+    fun HeadachePicker(onSelect: (Int) -> Unit) {
+        val radioOptions = listOf(0, 1, 2, 3)
         val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
         Column {
-            radioOptions.forEach { text ->
+            radioOptions.forEach { value ->
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .selectable(
-                            selected = (text == selectedOption),
+                            selected = (value == selectedOption),
                             onClick = {
-                                onOptionSelected(text)
+                                onOptionSelected(value)
+                                onSelect(value)
                             }
                         ),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
-                        selected = (text == selectedOption),
-                        onClick = { onOptionSelected(text) }
+                        selected = (value == selectedOption),
+                        onClick = {
+                            onOptionSelected(value)
+                            onSelect(value)
+                        }
                     )
                     Text(
-                        text = text
+                        text = painDescriptions.getPainDescription(value)
                     )
                 }
             }

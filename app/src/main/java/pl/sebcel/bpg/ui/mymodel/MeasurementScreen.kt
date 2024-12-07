@@ -21,11 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.data.local.database.PainDescriptions
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
+private val painDescriptions = PainDescriptions()
 
 @Composable
 fun MeasurementScreen(modifier: Modifier = Modifier, viewModel: MeasurementViewModel = hiltViewModel()) {
@@ -64,7 +66,7 @@ internal fun MeasurementScreen(
             Row() {
                 Text(formatter.format(it.date))
                 Text("\t")
-                Text("${it.pain}")
+                Text(painDescriptions.getPainDescription(it.pain))
             }
         }
     }

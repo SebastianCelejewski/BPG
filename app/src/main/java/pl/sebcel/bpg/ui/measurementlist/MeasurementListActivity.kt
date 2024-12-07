@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
+import pl.sebcel.bpg.data.local.database.PainDescriptions
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.mymodel.MeasurementScreen
 import pl.sebcel.bpg.ui.mymodel.MyModelScreen
@@ -32,6 +33,7 @@ import pl.sebcel.bpg.ui.theme.BPGTheme
 
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
