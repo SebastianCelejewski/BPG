@@ -34,7 +34,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.Measurement
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListActivity
-import pl.sebcel.bpg.ui.mymodel.MeasurementViewModel
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.util.Date
 
@@ -107,6 +106,4 @@ class MeasurementAddActivity : ComponentActivity() {
             AddNewMeasurement()
         }
     }
-
-
 }

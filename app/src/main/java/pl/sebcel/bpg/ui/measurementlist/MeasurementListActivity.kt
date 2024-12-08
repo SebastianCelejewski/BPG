@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
-import pl.sebcel.bpg.ui.mymodel.MeasurementScreen
 import pl.sebcel.bpg.ui.theme.BPGTheme
 
 @AndroidEntryPoint
@@ -37,14 +36,14 @@ class MeasurementListActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BPGTheme {
-                MeasurementList()
+                ListMeasurements()
             }
         }
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun MeasurementList() {
+    fun ListMeasurements() {
         var presses by remember { mutableIntStateOf(0) }
         Scaffold (
             topBar = {
@@ -61,12 +60,10 @@ class MeasurementListActivity : ComponentActivity() {
             }
         ) {
             innerPadding ->
-            Column {
-                Text(
-                    text = "elemele-dutki",
-                    modifier = Modifier.padding(innerPadding)
-                )
-                MeasurementScreen()
+            Column(
+                modifier = Modifier.padding(innerPadding)
+            ) {
+                MeasurementList()
             }
         }
     }
@@ -75,7 +72,7 @@ class MeasurementListActivity : ComponentActivity() {
     @Composable
     fun MeasurementListPreview() {
         BPGTheme {
-            MeasurementList()
+            ListMeasurements()
         }
     }
 
