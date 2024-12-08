@@ -16,7 +16,7 @@ import pl.sebcel.bpg.data.local.database.PainDescriptions
 private val painDescriptions = PainDescriptions()
 
 @Composable
-fun HeadachePicker(onSelect: (Int) -> Unit) {
+fun MeasurementHeadachePicker(onSelect: (Int) -> Unit) {
     val radioOptions = listOf(0, 1, 2, 3)
     val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
     Column {

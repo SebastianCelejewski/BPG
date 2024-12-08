@@ -7,7 +7,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -15,7 +14,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -40,20 +38,12 @@ import java.util.Date
 @AndroidEntryPoint
 class MeasurementAddActivity : ComponentActivity() {
 
-    @OptIn(ExperimentalMaterial3Api::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             BPGTheme {
                 AddNewMeasurement()
-            }
-            Column {
-                TopAppBar(
-                    title = {
-                        Text(stringResource(R.string.app_name))
-                    }
-                )
             }
         }
     }
@@ -82,7 +72,7 @@ class MeasurementAddActivity : ComponentActivity() {
                 modifier = Modifier.padding(innerPadding)
             ) {
                 MeasurementDatePicker(modifier = Modifier.height(36.dp))
-                HeadachePicker(onSelect = {
+                MeasurementHeadachePicker(onSelect = {
                     pain = it
                 })
                 MeasurementComment(onSelect = {

@@ -16,17 +16,17 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+
 
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
@@ -43,8 +43,9 @@ class MeasurementListActivity : ComponentActivity() {
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun ListMeasurements() {
-        var presses by remember { mutableIntStateOf(0) }
+    fun ListMeasurements(viewModel: MeasurementListViewModel = hiltViewModel()) {
+        val items by viewModel.uiState.collectAsStateWithLifecycle()
+
         Scaffold (
             topBar = {
                 TopAppBar(
@@ -63,14 +64,18 @@ class MeasurementListActivity : ComponentActivity() {
             Column(
                 modifier = Modifier.padding(innerPadding)
             ) {
-                MeasurementList()
+                if (items is MeasurementListUiState.Success) {
+                    MeasurementListTable(
+                        items = (items as MeasurementListUiState.Success).data
+                    )
+                }
             }
         }
     }
 
     @Preview
     @Composable
-    fun MeasurementListPreview() {
+    fun ListMeasurementsPreview() {
         BPGTheme {
             ListMeasurements()
         }
