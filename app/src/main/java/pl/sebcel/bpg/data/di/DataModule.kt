@@ -30,4 +30,8 @@ class FakeMeasurementRepository @Inject constructor() : MeasurementRepository {
     }
 }
 
-val fakeMeasurements = listOf(Measurement(date = Date(), pain = 1, comment = "Fake data"))
+val fakeMeasurements = listOf(
+    Measurement(date = Date(), pain = 1, comment = "Fake data 1"),
+    Measurement(date = Date(), pain = 2, comment = "Fake data 2"),
+    Measurement(date = Date(), pain = 0, comment = "Fake data 3")
+)

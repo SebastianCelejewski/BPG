@@ -26,6 +26,7 @@ import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 
 
 @AndroidEntryPoint
@@ -77,7 +78,7 @@ class MeasurementListActivity : ComponentActivity() {
     @Composable
     fun ListMeasurementsPreview() {
         BPGTheme {
-            ListMeasurements()
+            ListMeasurements(viewModel = MeasurementListViewModel(FakeMeasurementRepository()))
         }
     }
 
