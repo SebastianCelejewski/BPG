@@ -9,17 +9,12 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import pl.sebcel.bpg.data.local.database.AppDatabase
 import pl.sebcel.bpg.data.local.database.MeasurementDao
-import pl.sebcel.bpg.data.local.database.MyModelDao
 import javax.inject.Singleton
 
 
 @Module
 @InstallIn(SingletonComponent::class)
 class DatabaseModule {
-    @Provides
-    fun provideMyModelDao(appDatabase: AppDatabase): MyModelDao {
-        return appDatabase.myModelDao()
-    }
 
     @Provides
     fun provideMeasurementDao(appDatabase: AppDatabase): MeasurementDao {

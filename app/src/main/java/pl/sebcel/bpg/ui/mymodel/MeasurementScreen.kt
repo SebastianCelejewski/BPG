@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.data.local.database.Measurement
 import pl.sebcel.bpg.data.local.database.PainDescriptions
 import java.text.SimpleDateFormat
