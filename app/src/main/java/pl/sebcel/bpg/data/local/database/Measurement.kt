@@ -1,6 +1,7 @@
 package pl.sebcel.bpg.data.local.database
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
@@ -42,4 +43,7 @@ interface MeasurementDao {
 
     @Insert
     suspend fun insertMeasurement(item: Measurement)
+
+    @Delete
+    suspend fun deleteMeasurement(item: Measurement)
 }

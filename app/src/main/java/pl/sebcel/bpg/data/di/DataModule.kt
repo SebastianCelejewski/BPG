@@ -28,6 +28,10 @@ class FakeMeasurementRepository @Inject constructor() : MeasurementRepository {
     override suspend fun add(measurement: Measurement) {
         throw NotImplementedError()
     }
+
+    override suspend fun delete(measurement: Measurement) {
+        throw NotImplementedError()
+    }
 }
 
 val fakeMeasurements = listOf(

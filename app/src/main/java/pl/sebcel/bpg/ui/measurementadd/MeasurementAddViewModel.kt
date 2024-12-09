@@ -9,7 +9,7 @@ import pl.sebcel.bpg.data.local.database.Measurement
 import javax.inject.Inject
 
 @HiltViewModel
-class MeasurementViewModel @Inject constructor(
+class MeasurementAddViewModel @Inject constructor(
     private val measurementRepository: MeasurementRepository
 ) : ViewModel() {
 

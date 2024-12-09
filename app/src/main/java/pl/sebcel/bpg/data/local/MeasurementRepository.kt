@@ -8,7 +8,9 @@ import javax.inject.Inject
 interface MeasurementRepository {
     val measurements: Flow<List<Measurement>>
 
-    suspend fun add(measurement : Measurement)
+    suspend fun add(measurement: Measurement)
+
+    suspend fun delete(measurement: Measurement)
 }
 
 class DefaultMeasurementRepository @Inject constructor (private val measurementDao: MeasurementDao) : MeasurementRepository {
@@ -17,4 +19,9 @@ class DefaultMeasurementRepository @Inject constructor (private val measurementD
     override suspend fun add(measurement: Measurement) {
         measurementDao.insertMeasurement(measurement)
     }
+
+    override suspend fun delete(measurement: Measurement) {
+        measurementDao.deleteMeasurement(measurement)
+    }
+
 }

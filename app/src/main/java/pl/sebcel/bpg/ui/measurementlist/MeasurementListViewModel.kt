@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import pl.sebcel.bpg.data.MeasurementRepository
 import pl.sebcel.bpg.data.local.database.Measurement
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListUiState.Error
@@ -24,6 +25,11 @@ class MeasurementListViewModel @Inject constructor(
         .catch { emit(Error(it)) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MeasurementListUiState.Loading)
 
+    fun deleteMeasurement(measurement: Measurement) {
+        viewModelScope.launch {
+            measurementRepository.delete(measurement)
+        }
+    }
 }
 
 sealed interface MeasurementListUiState {
