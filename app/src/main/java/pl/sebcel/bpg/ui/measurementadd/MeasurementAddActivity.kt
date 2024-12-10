@@ -7,15 +7,20 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -60,10 +65,10 @@ class MeasurementAddActivity : ComponentActivity() {
 
         Scaffold (
             topBar = {
-                TopAppBar(
+                CenterAlignedTopAppBar(
                     colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        titleContentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.background,
+                        titleContentColor = MaterialTheme.colorScheme.onBackground,
                     ),
                     title = {
                         Text(stringResource(R.string.app_name))
@@ -72,24 +77,34 @@ class MeasurementAddActivity : ComponentActivity() {
             }
         ){
             innerPadding ->
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.padding(innerPadding)
+            Surface(
+                color = MaterialTheme.colorScheme.tertiary,
+                shape = RoundedCornerShape(16.dp),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxHeight()
             ) {
-                MeasurementDatePicker(modifier = Modifier.height(36.dp))
-                MeasurementHeadachePicker(onSelect = {
-                    pain = it
-                })
-                MeasurementComment(onSelect = {
-                    comment = it
-                })
-                Button(onClick = {
-                    viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
-                    val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier.padding(16.dp)
+                ) {
+                    MeasurementDatePicker(modifier = Modifier.height(36.dp))
+                    MeasurementHeadachePicker(onSelect = {
+                        pain = it
+                    })
+                    MeasurementComment(onSelect = {
+                        comment = it
+                    })
+                    Button(onClick = {
+                        viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
+                        val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
                         startActivity(intent)
                     }) {
-                    Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
+                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
+                    }
+                    Spacer(modifier = Modifier.weight(1.0f))
                 }
             }
         }

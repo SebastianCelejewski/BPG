@@ -10,14 +10,17 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -76,7 +79,7 @@ fun MeasurementListTable(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(6.dp)
+                        .padding(horizontal = 20.dp, vertical = 8.dp)
                 ){
                     DateRow(it.date)
                 }
@@ -100,13 +103,12 @@ fun MeasurementListTable(
                 modifier = modifier
                 .onSizeChanged {
                     itemHeight = with(density) { it.height.toDp() }
-                }
+                }.padding(horizontal = 16.dp, vertical = 4.dp)
+
             ){
                 Row(
                     modifier = Modifier
-                        .padding(4.dp)
-                        .border(2.dp, MaterialTheme.colorScheme.secondary, shape)
-                        .background(MaterialTheme.colorScheme.primary, shape)
+                        .background(MaterialTheme.colorScheme.tertiary, shape)
                         .padding(16.dp)
                         .fillMaxWidth()
                         .indication(interactionSource, LocalIndication.current)
@@ -176,23 +178,25 @@ fun DateRow(date: Date) {
     Text(
         text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
         style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.onSurface
     )
 }
 
 @Composable
 fun MeasurementRow(measurement: Measurement) {
-    Text(
-        text = timeFormatter.format(measurement.date),
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onPrimary
-    )
-    Text("\t")
-    Text(
-        painDescriptions.getPainDescription(measurement.pain),
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onPrimary
-    )
+    Row() {
+        Text(
+            text = timeFormatter.format(measurement.date),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onTertiary
+        )
+        Spacer(modifier = Modifier.weight(1.0f))
+        Text(
+            painDescriptions.getPainDescription(measurement.pain),
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.onTertiary
+        )
+    }
 }
 
 @Composable

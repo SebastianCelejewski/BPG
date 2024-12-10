@@ -9,27 +9,49 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
+//private val DarkColorScheme = darkColorScheme(
+//    primary = Purple80,
+//    secondary = PurpleGrey80,
+//    tertiary = Pink80
+//)
+//
+//private val LightColorScheme = lightColorScheme(
+//    primary = Purple40,
+//    secondary = PurpleGrey40,j
+//    tertiary = Pink40
+
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+    primary = DarkGreen1,
+    secondary = DarkGreen2,
+    tertiary = DarkGreen3,
+    onTertiary = DarkOnTertiary,
+    background = DarkGreen1,
+    onBackground = DarkOnBackground,
+    surface = DarkSurface,
+    onSurface = DarkOnSurface
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+    primary = LightGreen1,
+    secondary = LightGreen2,
+    tertiary = LightGreen3,
+    onTertiary = LightOnTertiary,
+    background = LightGreen1,
+    onBackground = LightOnBackground,
+    surface = LightSurface,
+    onSurface = LightOnSurface
 
     /* Other default colors to override
-    background = Color(0xFFFFFBFE),
-    surface = Color(0xFFFFFBFE),
+
+    surface = Color(0xFFEBE2C3),
+    onSurface = Color(0xFF2D3827),
     onPrimary = Color.White,
     onSecondary = Color.White,
     onTertiary = Color.White,
     onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
     */
 )
 
@@ -37,7 +59,7 @@ private val LightColorScheme = lightColorScheme(
 fun BPGTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
