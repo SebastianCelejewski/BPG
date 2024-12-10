@@ -1,5 +1,6 @@
 package pl.sebcel.bpg.ui.measurementlist
 
+import android.util.Log
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,11 +14,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -59,6 +66,8 @@ fun MeasurementListTable(
     modifier: Modifier = Modifier,
     onDelete: (Measurement) -> Unit
 ) {
+    val openAlertDialog = remember { mutableStateOf(false) }
+
     val shape = RectangleShape
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         var previousDate : String? = null
@@ -69,14 +78,7 @@ fun MeasurementListTable(
                         .fillMaxWidth()
                         .padding(6.dp)
                 ){
-                    val calendar = Calendar.getInstance()
-                    calendar.time = it.date
-                    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-                    Text(
-                        text = "${dateFormatter.format(it.date)}, ${daysOfWeek[dayOfWeek]}",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary
-                    )
+                    DateRow(it.date)
                 }
                 previousDate = dateFormatter.format(it.date)
             }
@@ -91,6 +93,7 @@ fun MeasurementListTable(
             )
             val onItemClick = {
                 onDelete(it)
+                openAlertDialog.value = true
             }
 
             Card(
@@ -122,17 +125,7 @@ fun MeasurementListTable(
                             )
                         }
                 ){
-                    Text(
-                        text = timeFormatter.format(it.date),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Text("\t")
-                    Text(
-                        painDescriptions.getPainDescription(it.pain),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
+                    MeasurementRow(it)
                 }
                 DropdownMenu(
                     expanded = isContextMenuVisible,
@@ -158,6 +151,90 @@ fun MeasurementListTable(
             }
         }
     }
+    when {
+        openAlertDialog.value -> {
+            AlertDialogExample(
+                onConfirmation = {
+                    openAlertDialog.value = false
+                },
+                onDismissRequest = {
+                    openAlertDialog.value = false
+                },
+                dialogTitle = "Ostrzeżenie",
+                dialogText = "Czy na pewno chcesz usunąć ten pomiar?.",
+                icon = Icons.Default.Info
+            )
+        }
+    }
+}
+
+@Composable
+fun DateRow(date: Date) {
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+    Text(
+        text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.primary
+    )
+}
+
+@Composable
+fun MeasurementRow(measurement: Measurement) {
+    Text(
+        text = timeFormatter.format(measurement.date),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onPrimary
+    )
+    Text("\t")
+    Text(
+        painDescriptions.getPainDescription(measurement.pain),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onPrimary
+    )
+}
+
+@Composable
+fun AlertDialogExample(
+    onDismissRequest: () -> Unit,
+    onConfirmation: () -> Unit,
+    dialogTitle: String,
+    dialogText: String,
+    icon: ImageVector,
+) {
+    AlertDialog(
+        icon = {
+            Icon(icon, contentDescription = "Example Icon")
+        },
+        title = {
+            Text(text = dialogTitle)
+        },
+        text = {
+            Text(text = dialogText)
+        },
+        onDismissRequest = {
+            onDismissRequest()
+        },
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onConfirmation()
+                }
+            ) {
+                Text("Confirm")
+            }
+        },
+        dismissButton = {
+            TextButton(
+                onClick = {
+                    onDismissRequest()
+                }
+            ) {
+                Text("Dismiss")
+            }
+        }
+    )
 }
 
 @Preview(showBackground = true)
