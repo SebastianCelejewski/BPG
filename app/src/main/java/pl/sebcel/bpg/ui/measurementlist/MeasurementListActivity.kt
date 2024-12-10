@@ -1,11 +1,14 @@
 package pl.sebcel.bpg.ui.measurementlist
 
 import android.content.Intent
+import androidx.compose.foundation.Image
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,6 +34,7 @@ import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
@@ -62,7 +66,10 @@ class MeasurementListActivity : ComponentActivity() {
                         titleContentColor = MaterialTheme.colorScheme.onBackground,
                     ),
                     title = {
-                        Text(stringResource(R.string.app_name))
+                        Image(
+                            painter = painterResource(R.drawable.header),
+                            contentDescription = stringResource(R.string.app_name)
+                        )
                     }
                 )
             },
@@ -73,21 +80,28 @@ class MeasurementListActivity : ComponentActivity() {
             }
         ) {
             innerPadding ->
-            Surface(
-                color = MaterialTheme.colorScheme.surface,
-                shape = RoundedCornerShape(16.dp),
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-            ) {
-                Column {
-                    if (items is MeasurementListUiState.Success) {
-                        MeasurementListTable(
-                            items = (items as MeasurementListUiState.Success).data,
-                            onDelete = {  viewModel.deleteMeasurement(it) }
-                        )
+            Column(modifier = Modifier.padding(innerPadding)) {
+                Image(
+                    painter = painterResource(R.drawable.ornament),
+                    contentDescription = stringResource(R.string.app_name),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                )
+                Surface(
+                    color = MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Column {
+                        if (items is MeasurementListUiState.Success) {
+                            MeasurementListTable(
+                                items = (items as MeasurementListUiState.Success).data,
+                                onDelete = {  viewModel.deleteMeasurement(it) }
+                            )
+                        }
                     }
                 }
+
             }
         }
     }

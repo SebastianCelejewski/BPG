@@ -5,10 +5,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +33,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -71,41 +74,55 @@ class MeasurementAddActivity : ComponentActivity() {
                         titleContentColor = MaterialTheme.colorScheme.onBackground,
                     ),
                     title = {
-                        Text(stringResource(R.string.app_name))
+                        Image(
+                            painter = painterResource(R.drawable.header),
+                            contentDescription = stringResource(R.string.app_name)
+                        )
                     }
                 )
             }
         ){
             innerPadding ->
-            Surface(
-                color = MaterialTheme.colorScheme.tertiary,
-                shape = RoundedCornerShape(16.dp),
+            Column(
                 modifier = Modifier
                     .padding(innerPadding)
-                    .padding(horizontal = 16.dp)
-                    .fillMaxHeight()
-            ) {
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(16.dp)
+            )
+            {
+                Image(
+                    painter = painterResource(R.drawable.ornament),
+                    contentDescription = stringResource(R.string.app_name),
+                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                )
+                Surface(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    shape = RoundedCornerShape(16.dp),
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxHeight()
                 ) {
-                    MeasurementDatePicker(modifier = Modifier.height(36.dp))
-                    MeasurementHeadachePicker(onSelect = {
-                        pain = it
-                    })
-                    MeasurementComment(onSelect = {
-                        comment = it
-                    })
-                    Button(onClick = {
-                        viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
-                        val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
-                        startActivity(intent)
-                    }) {
-                        Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
+                    Column(
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(16.dp)
+                    ) {
+                        MeasurementDatePicker(modifier = Modifier.height(36.dp))
+                        MeasurementHeadachePicker(onSelect = {
+                            pain = it
+                        })
+                        MeasurementComment(onSelect = {
+                            comment = it
+                        })
+                        Button(onClick = {
+                            viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
+                            val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
+                            startActivity(intent)
+                        }) {
+                            Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
+                        }
+                        Spacer(modifier = Modifier.weight(1.0f))
                     }
-                    Spacer(modifier = Modifier.weight(1.0f))
                 }
+
             }
         }
     }
