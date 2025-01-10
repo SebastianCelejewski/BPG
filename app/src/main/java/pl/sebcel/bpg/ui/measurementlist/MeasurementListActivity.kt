@@ -3,12 +3,12 @@ package pl.sebcel.bpg.ui.measurementlist
 import android.content.Intent
 import androidx.compose.foundation.Image
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -20,8 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -33,10 +31,10 @@ import pl.sebcel.bpg.R
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import pl.sebcel.bpg.services.DataUpdateServiceScheduler
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 
 
@@ -44,6 +42,7 @@ import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 class MeasurementListActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d("BPG", "Creating MeasurementListActivity")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -51,12 +50,17 @@ class MeasurementListActivity : ComponentActivity() {
                 ListMeasurements()
             }
         }
+
+        //DataUpdateServiceScheduler.scheduleJob(baseContext)
+        Log.d("BPG", "MeasurementListActivity created")
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun ListMeasurements(viewModel: MeasurementListViewModel = hiltViewModel()) {
+        Log.d("BPG", "Fetching list of measurements from the view model")
         val items by viewModel.uiState.collectAsStateWithLifecycle()
+        Log.d("BPG", "Fetched list of measurements from the view model")
 
         Scaffold (
             topBar = {

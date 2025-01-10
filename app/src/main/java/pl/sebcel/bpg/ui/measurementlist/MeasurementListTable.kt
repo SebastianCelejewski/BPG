@@ -172,14 +172,19 @@ fun MeasurementListTable(
 
 @Composable
 fun DateRow(date: Date) {
+    Log.d("BPG", "About to render a date row. Date: " + date)
     val calendar = Calendar.getInstance()
+    Log.d("BPG", "Calendar: " + calendar)
     calendar.time = date
+    Log.d("BPG", "Calendar set: " + calendar)
     val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+    Log.d("BPG", "Day of week: " + dayOfWeek)
     Text(
         text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.onSurface
     )
+    Log.d("BPG", "Rendered")
 }
 
 @Composable

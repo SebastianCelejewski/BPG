@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -28,5 +29,15 @@
             android:exported="false"
             android:label="@string/title_activity_measurement_add"
             android:theme="@style/Theme.BPG" />
+        <service
+            android:name=".services.DataUpdateService"
+            android:label="Word service"
+            android:permission="android.permission.BIND_JOB_SERVICE"/>
+        <receiver android:name=".services.DataUpdateServiceReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 </manifest>

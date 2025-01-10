@@ -1,5 +1,6 @@
 package pl.sebcel.bpg.ui.measurementlist
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,9 +27,11 @@ class MeasurementListViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), MeasurementListUiState.Loading)
 
     fun deleteMeasurement(measurement: Measurement) {
+        Log.d("BPG", "Deleting measurement using Measurement Repository")
         viewModelScope.launch {
             measurementRepository.delete(measurement)
         }
+        Log.d("BPG", "Deleted measurement using Measurement Repository")
     }
 }
 

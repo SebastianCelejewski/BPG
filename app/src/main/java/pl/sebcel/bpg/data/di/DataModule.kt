@@ -32,6 +32,10 @@ class FakeMeasurementRepository @Inject constructor() : MeasurementRepository {
     override suspend fun delete(measurement: Measurement) {
         throw NotImplementedError()
     }
+
+    override suspend fun getLastMeasurementDate() : Flow<Date> {
+        return flowOf(Date())
+    }
 }
 
 val fakeMeasurements = listOf(

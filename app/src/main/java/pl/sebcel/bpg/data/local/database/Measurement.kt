@@ -41,6 +41,9 @@ interface MeasurementDao {
     @Query("SELECT * FROM measurement ORDER BY uid DESC")
     fun getMeasurements(): Flow<List<Measurement>>
 
+    @Query("SELECT date FROM measurement ORDER BY date DESC LIMIT 1")
+    fun getLastMeasurementDate() : Flow<Date>
+
     @Insert
     suspend fun insertMeasurement(item: Measurement)
 
