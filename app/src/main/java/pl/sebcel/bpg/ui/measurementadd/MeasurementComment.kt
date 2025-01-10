@@ -16,9 +16,11 @@ fun MeasurementComment(modifier : Modifier = Modifier, onSelect: (String) -> Uni
 
     OutlinedTextField(
         value = comment,
-        onValueChange = { onSelect(it)},
+        onValueChange = {
+            comment = it
+            onSelect(it)
+        },
         label = { Text("Okoliczności") },
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }

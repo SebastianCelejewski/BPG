@@ -176,17 +176,31 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
 
 @Composable
 fun MeasurementRow(measurement: Measurement) {
-    Row(modifier = Modifier
-        .height(IntrinsicSize.Min)
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            DateElement(measurement)
-            TimeElement(measurement)
+    Column {
+        Row(
+            modifier = Modifier
+                .height(IntrinsicSize.Min)
+        ) {
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                DateElement(measurement)
+                TimeElement(measurement)
+            }
+            Spacer(modifier = Modifier.weight(1.0f))
+            ValueElement(measurement, Modifier.fillMaxHeight())
+            Spacer(modifier = Modifier.width(10.dp))
+            EmojiElement(measurement, Modifier.fillMaxHeight())
         }
-        Spacer(modifier = Modifier.weight(1.0f))
-        ValueElement(measurement, Modifier.fillMaxHeight())
-        Spacer(modifier = Modifier.width(10.dp))
-        EmojiElement(measurement, Modifier.fillMaxHeight())
+        if (measurement.comment.isNotEmpty()) {
+            Row(modifier = Modifier.padding(all = 0.dp)) {
+                Text(
+                    measurement.comment,
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.onTertiary,
+                    fontSize = 10.sp,
+                    lineHeight = 10.sp
+                )
+            }
+        }
     }
 }
 
