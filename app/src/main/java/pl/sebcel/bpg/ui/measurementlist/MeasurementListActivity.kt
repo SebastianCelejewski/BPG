@@ -34,7 +34,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import pl.sebcel.bpg.services.DataUpdateServiceScheduler
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 
 
@@ -99,7 +98,7 @@ class MeasurementListActivity : ComponentActivity() {
                     Column {
                         if (items is MeasurementListUiState.Success) {
                             MeasurementListTable(
-                                items = (items as MeasurementListUiState.Success).data,
+                                measurements = (items as MeasurementListUiState.Success).data,
                                 onDelete = {  viewModel.deleteMeasurement(it) }
                             )
                         }

@@ -3,7 +3,6 @@ package pl.sebcel.bpg.ui.measurementlist
 import android.util.Log
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -13,14 +12,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -65,16 +62,12 @@ data class DropDownItem(
 
 @Composable
 fun MeasurementListTable(
-    items: List<Measurement>,
-    modifier: Modifier = Modifier,
+    measurements: List<Measurement>,
     onDelete: (Measurement) -> Unit
-) {
-    val openAlertDialog = remember { mutableStateOf(false) }
-
-    val shape = RectangleShape
+    ) {
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
         var previousDate : String? = null
-        items.forEach {
+        measurements.forEach {
             if (previousDate == null || dateFormatter.format(it.date) != previousDate) {
                 Row(
                     modifier = Modifier
@@ -85,74 +78,85 @@ fun MeasurementListTable(
                 }
                 previousDate = dateFormatter.format(it.date)
             }
-            var isContextMenuVisible by rememberSaveable { mutableStateOf(false)}
-            var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
-            val interactionSource = remember { MutableInteractionSource() }
-            var itemHeight by remember { mutableStateOf(0.dp) }
-            val density = LocalDensity.current
 
-            val dropdownItems = listOf(
-                DropDownItem("Usuń")
-            )
-            val onItemClick = {
-                onDelete(it)
-                openAlertDialog.value = true
-            }
+            MeasurementCard(it, onDelete)
+        }
+    }
+}
 
-            Card(
-                modifier = modifier
-                .onSizeChanged {
-                    itemHeight = with(density) { it.height.toDp() }
-                }.padding(horizontal = 16.dp, vertical = 4.dp)
+@Composable
+fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, modifier : Modifier = Modifier) {
+    val openAlertDialog = remember { mutableStateOf(false) }
 
-            ){
-                Row(
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.tertiary, shape)
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .indication(interactionSource, LocalIndication.current)
-                        .pointerInput(true) {
-                            detectTapGestures(
-                                onLongPress = {
-                                    isContextMenuVisible = true
-                                    pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
-                                },
-                                onPress = {
-                                    val press = PressInteraction.Press(it)
-                                    interactionSource.emit(press)
-                                    tryAwaitRelease()
-                                    interactionSource.emit(PressInteraction.Release(press))
-                                }
-                            )
+    val shape = RectangleShape
+
+    var isContextMenuVisible by rememberSaveable { mutableStateOf(false)}
+    var pressOffset by remember { mutableStateOf(DpOffset.Zero) }
+    val interactionSource = remember { MutableInteractionSource() }
+    var itemHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
+
+    val dropdownItems = listOf(
+        DropDownItem("Usuń")
+    )
+    val onItemClick = {
+        onDelete(measurement)
+        openAlertDialog.value = true
+    }
+
+    Card(
+        modifier = modifier
+            .onSizeChanged {
+                itemHeight = with(density) { it.height.toDp() }
+            }.padding(horizontal = 16.dp, vertical = 4.dp)
+
+    ){
+        Row(
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.tertiary, shape)
+                .padding(16.dp)
+                .fillMaxWidth()
+                .indication(interactionSource, LocalIndication.current)
+                .pointerInput(true) {
+                    detectTapGestures(
+                        onLongPress = {
+                            isContextMenuVisible = true
+                            pressOffset = DpOffset(it.x.toDp(), it.y.toDp())
+                        },
+                        onPress = {
+                            val press = PressInteraction.Press(it)
+                            interactionSource.emit(press)
+                            tryAwaitRelease()
+                            interactionSource.emit(PressInteraction.Release(press))
                         }
-                ){
-                    MeasurementRow(it)
-                }
-                DropdownMenu(
-                    expanded = isContextMenuVisible,
-                    onDismissRequest = {
-                        isContextMenuVisible = false
-                    },
-                    offset = pressOffset.copy(
-                        y = pressOffset.y - itemHeight
                     )
-                ) {
-                    dropdownItems.forEach {
-                        DropdownMenuItem(
-                            text = {
-                                Text(it.text)
-                            },
-                            onClick = {
-                                onItemClick()
-                                isContextMenuVisible = false
-                            }
-                        )
-                    }
                 }
+        ){
+            MeasurementRow(measurement)
+        }
+        DropdownMenu(
+            expanded = isContextMenuVisible,
+            onDismissRequest = {
+                isContextMenuVisible = false
+            },
+            offset = pressOffset.copy(
+                y = pressOffset.y - itemHeight
+            )
+        ) {
+            dropdownItems.forEach {
+                DropdownMenuItem(
+                    text = {
+                        Text(it.text)
+                    },
+                    onClick = {
+                        onItemClick()
+                        isContextMenuVisible = false
+                    }
+                )
             }
         }
     }
+
     when {
         openAlertDialog.value -> {
             AlertDialogExample(
