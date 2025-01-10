@@ -18,7 +18,7 @@ private val painDescriptions = PainDescriptions()
 @Composable
 fun MeasurementHeadachePicker(onSelect: (Int) -> Unit) {
     val radioOptions = listOf(0, 1, 2, 3)
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[1] ) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0] ) }
     Column {
         radioOptions.forEach { value ->
             Row(

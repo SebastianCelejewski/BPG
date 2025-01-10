@@ -1,19 +1,24 @@
 package pl.sebcel.bpg.ui.measurementlist
 
-import android.util.Log
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.PressInteraction
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
@@ -30,8 +35,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
@@ -39,6 +47,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import pl.sebcel.bpg.data.local.database.Measurement
 import pl.sebcel.bpg.data.local.database.PainDescriptions
 import pl.sebcel.bpg.ui.theme.BPGTheme
@@ -47,12 +57,13 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-private val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 private val daysOfWeek =
-    arrayOf("niedziela", "poniedziałek", "wtorek", "środa", "czwartek", "piątek", "sobota")
+    arrayOf("nd", "pn", "wt", "śr", "cz", "pt", "sb")
+
+private val emojis = arrayOf("0x1F642", "0x1F61E", "0x1F641", "0x1F621")
 
 private val painDescriptions = PainDescriptions()
 
@@ -65,21 +76,9 @@ fun MeasurementListTable(
     measurements: List<Measurement>,
     onDelete: (Measurement) -> Unit
     ) {
-    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-        var previousDate : String? = null
-        measurements.forEach {
-            if (previousDate == null || dateFormatter.format(it.date) != previousDate) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 20.dp, vertical = 8.dp)
-                ){
-                    DateRow(it.date)
-                }
-                previousDate = dateFormatter.format(it.date)
-            }
-
-            MeasurementCard(it, onDelete)
+    LazyColumn {
+        items(measurements) {
+            measurement -> MeasurementCard(measurement, onDelete)
         }
     }
 }
@@ -108,7 +107,8 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
         modifier = modifier
             .onSizeChanged {
                 itemHeight = with(density) { it.height.toDp() }
-            }.padding(horizontal = 16.dp, vertical = 4.dp)
+            }
+            .padding(horizontal = 16.dp, vertical = 4.dp)
 
     ){
         Row(
@@ -175,37 +175,71 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
 }
 
 @Composable
-fun DateRow(date: Date) {
-    Log.d("BPG", "About to render a date row. Date: " + date)
-    val calendar = Calendar.getInstance()
-    Log.d("BPG", "Calendar: " + calendar)
-    calendar.time = date
-    Log.d("BPG", "Calendar set: " + calendar)
-    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
-    Log.d("BPG", "Day of week: " + dayOfWeek)
-    Text(
-        text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
-        style = MaterialTheme.typography.titleLarge,
-        color = MaterialTheme.colorScheme.onSurface
-    )
-    Log.d("BPG", "Rendered")
+fun MeasurementRow(measurement: Measurement) {
+    Row(modifier = Modifier
+        .height(IntrinsicSize.Min)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            DateElement(measurement)
+            TimeElement(measurement)
+        }
+        Spacer(modifier = Modifier.weight(1.0f))
+        ValueElement(measurement, Modifier.fillMaxHeight())
+        Spacer(modifier = Modifier.width(10.dp))
+        EmojiElement(measurement, Modifier.fillMaxHeight())
+    }
 }
 
 @Composable
-fun MeasurementRow(measurement: Measurement) {
-    Row() {
-        Text(
-            text = timeFormatter.format(measurement.date),
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onTertiary
-        )
-        Spacer(modifier = Modifier.weight(1.0f))
+fun EmojiElement(measurement: Measurement, modifier: Modifier = Modifier) {
+    val painValue = measurement.pain
+    val emoji = emojis[painValue]
+    val emojiCode = Integer.decode(emoji)
+    val emojiCharacter = StringBuilder().appendCodePoint(emojiCode).toString()
+    AndroidView(
+        factory = { context ->
+            AppCompatTextView(context).apply {
+                setTextColor(Color.Black.toArgb())
+                text = emojiCharacter
+                textSize = 48f
+            }
+        }
+    )
+}
+
+@Composable
+fun ValueElement(measurement: Measurement, modifier: Modifier = Modifier) {
+    Column(verticalArrangement = Arrangement.Center, modifier = modifier) {
         Text(
             painDescriptions.getPainDescription(measurement.pain),
             style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.onTertiary
+            color = MaterialTheme.colorScheme.onTertiary,
         )
     }
+}
+
+@Composable
+fun DateElement(measurement: Measurement) {
+    val date = measurement.date
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+    Text(
+        text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onSurface,
+        fontSize = 16.sp
+    )
+}
+
+@Composable
+fun TimeElement(measurement: Measurement) {
+    Text(
+        text = timeFormatter.format(measurement.date),
+        style = MaterialTheme.typography.titleLarge,
+        color = MaterialTheme.colorScheme.onTertiary,
+        fontSize = 16.sp
+    )
 }
 
 @Composable
