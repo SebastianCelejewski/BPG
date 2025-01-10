@@ -17,7 +17,7 @@
         <activity
             android:name=".ui.measurementlist.MeasurementListActivity"
             android:exported="true"
-            android:label="@string/title_activity_measurement_list"
+            android:label="Boli Pocia Główka"
             android:theme="@style/Theme.BPG">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

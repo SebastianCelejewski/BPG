@@ -61,7 +61,7 @@ private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 private val daysOfWeek =
-    arrayOf("nd", "pn", "wt", "śr", "cz", "pt", "sb")
+    arrayOf("00", "pn", "wt", "śr", "cz", "pt", "sb", "nd", "??")
 
 private val emojis = arrayOf("0x1F642", "0x1F61E", "0x1F641", "0x1F621")
 
@@ -201,7 +201,7 @@ fun EmojiElement(measurement: Measurement, modifier: Modifier = Modifier) {
             AppCompatTextView(context).apply {
                 setTextColor(Color.Black.toArgb())
                 text = emojiCharacter
-                textSize = 48f
+                textSize = 36f
             }
         }
     )
