@@ -1,6 +1,38 @@
 <resources>
     <string name="app_name">Boli Pocia Główka</string>
-    <string name="label_button_measurement_add">Dodaj</string>
-    <string name="title_activity_measurement_list">Lista pomiarów</string>
-    <string name="title_activity_measurement_add">Dodaj pomiar</string>
+    <string name="add_measurement_button_label">Dodaj</string>
+    <string name="measurement_list_activity_title">Lista pomiarów</string>
+    <string name="add_measurement_activity_title">Dodaj pomiar</string>
+    <string name="data_update_service_title">Data Update Service</string>
+
+    <string name="pain_description_0">Brak bólu</string>
+    <string name="pain_description_1">Ból lekki</string>
+    <string name="pain_description_2">Ból średni</string>
+    <string name="pain_description_3">Ból mocny</string>
+
+    <string name="bpg_database_name">BPG</string>
+
+    <string name="measurement_comment_label">Okoliczności</string>
+    <string name="measurement_date_field_label">Data pomiaru</string>
+    <string name="select_measurement_date_button_label">Wybierz datę</string>
+
+    <string name="cancel_button_label">Anuluj</string>
+    <string name="add_button_label">Dodaj</string>
+    <string name="delete_button_label">Usuń</string>
+
+    <string name="delete_confirmation_title">Ostrzeżenie</string>
+    <string name="delete_confirmation_text">Czy na pewno chcesz usunąć ten pomiar?</string>
+    <string name="delete_confirmation_button_label">Potwierdź</string>
+
+    <string-array name="days_of_the_week">
+        <item>00</item>
+        <item>pn</item>
+        <item>wt</item>
+        <item>śr</item>
+        <item>cz</item>
+        <item>pt</item>
+        <item>sb</item>
+        <item>nd</item>
+        <item>08</item>
+    </string-array>
 </resources>

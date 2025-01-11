@@ -6,8 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import pl.sebcel.bpg.data.DefaultMeasurementRepository
-import pl.sebcel.bpg.data.MeasurementRepository
+import pl.sebcel.bpg.data.local.DefaultMeasurementRepository
+import pl.sebcel.bpg.data.local.MeasurementRepository
 import pl.sebcel.bpg.data.local.database.Measurement
 import java.util.Date
 import javax.inject.Inject

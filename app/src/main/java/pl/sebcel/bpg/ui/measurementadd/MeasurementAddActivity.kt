@@ -26,6 +26,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -61,7 +62,7 @@ class MeasurementAddActivity : ComponentActivity() {
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
         var measurementDate by remember { mutableStateOf(Date())}
-        var pain by remember { mutableStateOf(0)}
+        var pain by remember { mutableIntStateOf(0) }
         var comment by remember { mutableStateOf("")}
 
         Scaffold (
@@ -115,7 +116,7 @@ class MeasurementAddActivity : ComponentActivity() {
                             val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
                             startActivity(intent)
                         }) {
-                            Icon(Icons.Default.Check, contentDescription = stringResource(R.string.label_button_measurement_add))
+                            Icon(Icons.Default.Check, contentDescription = stringResource(R.string.add_measurement_button_label))
                         }
                         Spacer(modifier = Modifier.weight(1.0f))
                     }

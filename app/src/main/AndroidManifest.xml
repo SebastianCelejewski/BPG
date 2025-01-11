@@ -12,12 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.BPG"
-        android:name=".MyApplication"
+        android:name=".BpgApplication"
         tools:targetApi="31">
         <activity
             android:name=".ui.measurementlist.MeasurementListActivity"
             android:exported="true"
-            android:label="Boli Pocia Główka"
             android:theme="@style/Theme.BPG">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,11 +26,11 @@
         <activity
             android:name=".ui.measurementadd.MeasurementAddActivity"
             android:exported="false"
-            android:label="@string/title_activity_measurement_add"
+            android:label="@string/add_measurement_activity_title"
             android:theme="@style/Theme.BPG" />
         <service
             android:name=".services.DataUpdateService"
-            android:label="Word service"
+            android:label="@string/data_update_service_title"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
         <receiver android:name=".services.DataUpdateServiceReceiver"
             android:exported="false">

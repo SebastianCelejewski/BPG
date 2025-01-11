@@ -36,12 +36,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 
-
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("BPG", "Creating MeasurementListActivity")
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
@@ -51,15 +49,12 @@ class MeasurementListActivity : ComponentActivity() {
         }
 
         //DataUpdateServiceScheduler.scheduleJob(baseContext)
-        Log.d("BPG", "MeasurementListActivity created")
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun ListMeasurements(viewModel: MeasurementListViewModel = hiltViewModel()) {
-        Log.d("BPG", "Fetching list of measurements from the view model")
         val items by viewModel.uiState.collectAsStateWithLifecycle()
-        Log.d("BPG", "Fetched list of measurements from the view model")
 
         Scaffold (
             topBar = {
@@ -78,7 +73,7 @@ class MeasurementListActivity : ComponentActivity() {
             },
             floatingActionButton = {
                 FloatingActionButton(onClick = { AddMeasurement() }) {
-                    Icon(Icons.Default.Add, contentDescription = "Add")
+                    Icon(Icons.Default.Add, contentDescription = getString(R.string.add_button_label))
                 }
             }
         ) {

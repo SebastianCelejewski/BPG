@@ -1,5 +1,6 @@
 package pl.sebcel.bpg.ui.measurementlist
 
+import android.content.res.Resources
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -49,6 +50,8 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import pl.sebcel.bpg.BpgApplication
+import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.Measurement
 import pl.sebcel.bpg.data.local.database.PainDescriptions
 import pl.sebcel.bpg.ui.theme.BPGTheme
@@ -60,8 +63,7 @@ import java.util.Locale
 private val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
-private val daysOfWeek =
-    arrayOf("00", "pn", "wt", "śr", "cz", "pt", "sb", "nd", "??")
+private val daysOfWeek = BpgApplication.instance.resources.getStringArray(R.array.days_of_the_week)
 
 private val emojis = arrayOf("0x1F642", "0x1F61E", "0x1F641", "0x1F621")
 
@@ -96,7 +98,7 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
     val density = LocalDensity.current
 
     val dropdownItems = listOf(
-        DropDownItem("Usuń")
+        DropDownItem(BpgApplication.instance.getString(R.string.delete_button_label))
     )
     val onItemClick = {
         onDelete(measurement)
@@ -166,8 +168,8 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
                 onDismissRequest = {
                     openAlertDialog.value = false
                 },
-                dialogTitle = "Ostrzeżenie",
-                dialogText = "Czy na pewno chcesz usunąć ten pomiar?.",
+                dialogTitle = BpgApplication.instance.getString(R.string.delete_confirmation_title),
+                dialogText = BpgApplication.instance.getString(R.string.delete_confirmation_text),
                 icon = Icons.Default.Info
             )
         }
@@ -283,7 +285,7 @@ fun AlertDialogExample(
                     onConfirmation()
                 }
             ) {
-                Text("Confirm")
+                Text(BpgApplication.instance.getString(R.string.delete_confirmation_button_label))
             }
         },
         dismissButton = {
@@ -292,7 +294,7 @@ fun AlertDialogExample(
                     onDismissRequest()
                 }
             ) {
-                Text("Dismiss")
+                Text(BpgApplication.instance.getString(R.string.cancel_button_label))
             }
         }
     )
