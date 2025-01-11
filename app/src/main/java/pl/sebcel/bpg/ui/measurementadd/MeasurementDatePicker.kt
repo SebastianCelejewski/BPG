@@ -1,6 +1,5 @@
 package pl.sebcel.bpg.ui.measurementadd
 
-import android.content.res.Resources
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
