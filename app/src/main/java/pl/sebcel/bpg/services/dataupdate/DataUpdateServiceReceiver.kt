@@ -1,4 +1,4 @@
-package pl.sebcel.bpg.services
+package pl.sebcel.bpg.services.dataupdate
 
 import android.content.BroadcastReceiver
 import android.content.Context

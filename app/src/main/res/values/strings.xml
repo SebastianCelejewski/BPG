@@ -24,6 +24,12 @@
     <string name="delete_confirmation_text">Czy na pewno chcesz usunąć ten pomiar?</string>
     <string name="delete_confirmation_button_label">Potwierdź</string>
 
+    <string name="notification_channel_id">BPG Channel</string>
+    <string name="notification_channel_name">BPG Notifications</string>
+    <string name="notification_channel_description">Notifications sent from Boli Pocia Główka application, e.g. to prompt to provide a new measurement.</string>
+    <string name="data_update_notification_title">Czy boli Cię teraz główka?</string>
+    <string name="data_update_notification_text">Kliknij aby wprowadzić nowy pomiar.</string>
+
     <string-array name="days_of_the_week">
         <item>00</item>
         <item>pn</item>

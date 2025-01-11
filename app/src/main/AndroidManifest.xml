@@ -29,10 +29,10 @@
             android:label="@string/add_measurement_activity_title"
             android:theme="@style/Theme.BPG" />
         <service
-            android:name=".services.DataUpdateService"
+            android:name=".services.dataupdate.DataUpdateService"
             android:label="@string/data_update_service_title"
             android:permission="android.permission.BIND_JOB_SERVICE"/>
-        <receiver android:name=".services.DataUpdateServiceReceiver"
+        <receiver android:name=".services.dataupdate.DataUpdateServiceReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
