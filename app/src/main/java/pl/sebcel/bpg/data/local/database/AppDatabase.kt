@@ -18,6 +18,7 @@ import pl.sebcel.bpg.data.local.database.model.Notification
         AutoMigration(from = 1, to = 2)
     ]
 )
+
 @TypeConverters(DateConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun measurementDao(): MeasurementDao
