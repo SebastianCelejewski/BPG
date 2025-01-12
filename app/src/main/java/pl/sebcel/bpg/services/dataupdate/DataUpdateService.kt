@@ -8,7 +8,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import pl.sebcel.bpg.data.local.database.model.Notification
 import pl.sebcel.bpg.data.local.repositories.MeasurementRepository
+import pl.sebcel.bpg.data.local.repositories.NotificationRepository
 import pl.sebcel.bpg.services.notifications.NotificationsService
 import java.util.Date
 import javax.inject.Inject
@@ -23,6 +25,9 @@ class DataUpdateService : JobService() {
     @Inject
     lateinit var measurementRepository: MeasurementRepository
 
+    @Inject
+    lateinit var notificationRepository: NotificationRepository
+
     @SuppressLint("NewApi")
     override fun onStartJob(params: JobParameters): Boolean {
         Log.d("BPG", "Running DataUpdateService")
@@ -32,13 +37,14 @@ class DataUpdateService : JobService() {
                 val lastMeasurementDate = measurementRepository.getLastMeasurementDate().first()
                 Log.d("BPG", "Last measurement date: $lastMeasurementDate")
 
+                val lastNotificationDate = notificationRepository.getLastNotificationDate().first()
+                Log.d("BPG", "Last notification date: $lastNotificationDate")
+
                 val currentDate = Date()
                 Log.d("BPG", "Current date: $currentDate")
 
                 val timeSinceLastMeasurement = currentDate.time - lastMeasurementDate.time
                 val timeSinceLastNotification = currentDate.time - lastNotificationDate.time
-                Log.d("BPG", "Last measurement date: $lastMeasurementDate")
-                Log.d("BPG", "Last notification date: $lastNotificationDate")
                 Log.d("BPG", "Time since last measurement: ${timeSinceLastMeasurement/1000} s, timeout: ${measurementTimeout/1000} s")
                 Log.d("BPG", "Time since last notification: ${timeSinceLastNotification/1000} s, timeout: ${notificationTimeout/1000} s")
 
@@ -48,7 +54,7 @@ class DataUpdateService : JobService() {
                     if (timeSinceLastNotification > notificationTimeout) {
                         Log.d("BPG", "It is time to send a new notification")
                         NotificationsService.sendNotification()
-                        lastNotificationDate = currentDate
+                        notificationRepository.add(Notification(date = currentDate))
                     } else {
                         Log.d("BPG", "It is not time to send a new notification yet")
                     }

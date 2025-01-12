@@ -12,7 +12,7 @@ import java.util.Date
 interface NotificationDao {
 
     @Query("SELECT * FROM notification ORDER BY uid DESC")
-    fun getNotifications(): Flow<List<Measurement>>
+    fun getNotifications(): Flow<List<Notification>>
 
     @Query("SELECT date FROM notification ORDER BY date DESC LIMIT 1")
     fun getLastNotificationDate() : Flow<Date>

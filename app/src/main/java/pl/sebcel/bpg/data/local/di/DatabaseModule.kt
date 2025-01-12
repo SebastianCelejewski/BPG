@@ -10,6 +10,7 @@ import dagger.hilt.components.SingletonComponent
 import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.AppDatabase
+import pl.sebcel.bpg.data.local.database.dao.NotificationDao
 import pl.sebcel.bpg.data.local.database.model.MeasurementDao
 import javax.inject.Singleton
 
@@ -20,6 +21,11 @@ class DatabaseModule {
     @Provides
     fun provideMeasurementDao(appDatabase: AppDatabase): MeasurementDao {
         return appDatabase.measurementDao()
+    }
+
+    @Provides
+    fun provideNotificationDao(appDatabase: AppDatabase): NotificationDao {
+        return appDatabase.notificationDao()
     }
 
     @Provides

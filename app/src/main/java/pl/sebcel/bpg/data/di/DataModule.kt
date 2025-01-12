@@ -9,6 +9,8 @@ import kotlinx.coroutines.flow.flowOf
 import pl.sebcel.bpg.data.local.repositories.DefaultMeasurementRepository
 import pl.sebcel.bpg.data.local.repositories.MeasurementRepository
 import pl.sebcel.bpg.data.local.database.model.Measurement
+import pl.sebcel.bpg.data.local.repositories.DefaultNotificationRepository
+import pl.sebcel.bpg.data.local.repositories.NotificationRepository
 import java.util.Date
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -20,6 +22,10 @@ interface DataModule {
     @Singleton
     @Binds
     fun bindsMeasurementRepository(measurementRepository: DefaultMeasurementRepository): MeasurementRepository
+
+    @Singleton
+    @Binds
+    fun bindsNotificationRepository(notificationRepository: DefaultNotificationRepository): NotificationRepository
 }
 
 class FakeMeasurementRepository @Inject constructor() : MeasurementRepository {
