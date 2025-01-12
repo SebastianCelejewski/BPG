@@ -8,7 +8,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import pl.sebcel.bpg.data.local.MeasurementRepository
+import pl.sebcel.bpg.data.local.repositories.MeasurementRepository
 import pl.sebcel.bpg.services.notifications.NotificationsService
 import java.util.Date
 import javax.inject.Inject
@@ -16,8 +16,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class DataUpdateService : JobService() {
 
-    private val measurementTimeout : Long = 3 * 60 * 60 * 1000L
-    private val notificationTimeout : Long = 1 * 60 * 60 * 1000L
+    private val measurementTimeout : Long = 1 * 60 * 60 * 1000L
+    private val notificationTimeout : Long = 30 * 60 * 1000L
     private var lastNotificationDate : Date = Date(0L)
 
     @Inject

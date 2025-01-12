@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import pl.sebcel.bpg.data.local.database.PainDescriptions
+import pl.sebcel.bpg.data.local.database.model.PainDescriptions
 
 private val painDescriptions = PainDescriptions()
 

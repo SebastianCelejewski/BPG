@@ -1,4 +1,4 @@
-package pl.sebcel.bpg.data.local.database
+package pl.sebcel.bpg.data.local.database.model
 
 import androidx.room.Dao
 import androidx.room.Delete
@@ -6,9 +6,9 @@ import androidx.room.Entity
 import androidx.room.Insert
 import androidx.room.PrimaryKey
 import androidx.room.Query
-import androidx.room.TypeConverter
 import androidx.room.TypeConverters
 import kotlinx.coroutines.flow.Flow
+import pl.sebcel.bpg.data.local.database.converters.DateConverter
 import java.util.Date
 
 @Entity
@@ -24,17 +24,7 @@ data class Measurement (
     var uid: Int = 0
 }
 
-object DateConverter {
-    @TypeConverter
-    fun toDate(timestamp: Long?): Date? {
-        return if (timestamp == null) null else Date(timestamp)
-    }
 
-    @TypeConverter
-    fun toTimestamp(date: Date?): Long? {
-        return date?.time
-    }
-}
 
 @Dao
 interface MeasurementDao {

@@ -1,6 +1,5 @@
 package pl.sebcel.bpg.ui.measurementlist
 
-import android.content.res.Resources
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
@@ -52,8 +51,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.R
-import pl.sebcel.bpg.data.local.database.Measurement
-import pl.sebcel.bpg.data.local.database.PainDescriptions
+import pl.sebcel.bpg.data.local.database.model.Measurement
+import pl.sebcel.bpg.data.local.database.model.PainDescriptions
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.text.SimpleDateFormat
 import java.util.Calendar

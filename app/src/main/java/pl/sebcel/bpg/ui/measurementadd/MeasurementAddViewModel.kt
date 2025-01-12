@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import pl.sebcel.bpg.data.local.MeasurementRepository
-import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.data.local.repositories.MeasurementRepository
+import pl.sebcel.bpg.data.local.database.model.Measurement
 import javax.inject.Inject
 
 @HiltViewModel

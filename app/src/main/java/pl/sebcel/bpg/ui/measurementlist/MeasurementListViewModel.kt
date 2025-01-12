@@ -9,8 +9,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import pl.sebcel.bpg.data.local.MeasurementRepository
-import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.data.local.repositories.MeasurementRepository
+import pl.sebcel.bpg.data.local.database.model.Measurement
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListUiState.Error
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListUiState.Success
 import javax.inject.Inject

@@ -1,8 +1,8 @@
-package pl.sebcel.bpg.data.local
+package pl.sebcel.bpg.data.local.repositories
 
 import kotlinx.coroutines.flow.Flow
-import pl.sebcel.bpg.data.local.database.Measurement
-import pl.sebcel.bpg.data.local.database.MeasurementDao
+import pl.sebcel.bpg.data.local.database.model.Measurement
+import pl.sebcel.bpg.data.local.database.model.MeasurementDao
 import java.util.Date
 import javax.inject.Inject
 

@@ -1,6 +1,5 @@
-package pl.sebcel.bpg.data.local.database
+package pl.sebcel.bpg.data.local.database.model
 
-import android.content.res.Resources
 import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.R
 

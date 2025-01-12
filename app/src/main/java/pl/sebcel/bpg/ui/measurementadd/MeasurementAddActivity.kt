@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
-import pl.sebcel.bpg.data.local.database.Measurement
+import pl.sebcel.bpg.data.local.database.model.Measurement
 import pl.sebcel.bpg.ui.measurementlist.MeasurementListActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.util.Date
