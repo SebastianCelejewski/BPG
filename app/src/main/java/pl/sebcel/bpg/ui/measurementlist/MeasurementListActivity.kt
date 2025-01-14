@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -35,10 +34,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import pl.sebcel.bpg.services.notifications.NotificationsService
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 import pl.sebcel.bpg.services.dataupdate.DataUpdateServiceScheduler
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
@@ -79,9 +76,6 @@ class MeasurementListActivity : ComponentActivity() {
                 Row {
                     FloatingActionButton(onClick = { AddMeasurement() }) {
                         Icon(Icons.Default.Add, contentDescription = getString(R.string.add_button_label))
-                    }
-                    FloatingActionButton(onClick = { NotificationsService.sendNotification() }) {
-                        Icon(Icons.Default.Notifications, contentDescription = "Wyślij powiadomienie")
                     }
                 }
             }
