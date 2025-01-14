@@ -1,6 +1,6 @@
 package pl.sebcel.bpg.ui.measurementlist
 
-import androidx.appcompat.widget.AppCompatTextView
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -37,18 +38,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
@@ -64,7 +64,9 @@ private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 private val daysOfWeek = BpgApplication.instance.resources.getStringArray(R.array.days_of_the_week)
 
-private val emojis = arrayOf("0x1F642", "0x1F61E", "0x1F641", "0x1F621")
+private val emojis = arrayOf(R.drawable.smiling_face, R.drawable.neutral_face, R.drawable.sad_face, R.drawable.angry_face)
+private val emojiDescriptions = arrayOf(R.string.pain_description_0, R.string.pain_description_1, R.string.pain_description_2, R.string.pain_description_3)
+//"0x1F642", "0x1F61E", "0x1F641", "0x1F621"
 
 private val painDescriptions = PainDescriptions()
 
@@ -209,16 +211,12 @@ fun MeasurementRow(measurement: Measurement) {
 fun EmojiElement(measurement: Measurement, modifier: Modifier = Modifier) {
     val painValue = measurement.pain
     val emoji = emojis[painValue]
-    val emojiCode = Integer.decode(emoji)
-    val emojiCharacter = StringBuilder().appendCodePoint(emojiCode).toString()
-    AndroidView(
-        factory = { context ->
-            AppCompatTextView(context).apply {
-                setTextColor(Color.Black.toArgb())
-                text = emojiCharacter
-                textSize = 36f
-            }
-        }
+    val emojiDescription = emojiDescriptions[painValue]
+
+    Image(
+        painter = painterResource(emoji),
+        contentDescription = stringResource(emojiDescription),
+        Modifier.size(48.dp)
     )
 }
 

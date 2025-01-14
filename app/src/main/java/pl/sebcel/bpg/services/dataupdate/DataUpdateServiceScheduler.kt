@@ -10,7 +10,7 @@ import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.services.notifications.NotificationsService
 
 object DataUpdateServiceScheduler {
-    private const val CHECK_INTERVAL : Long = 3 * 60 * 1000
+    private const val CHECK_INTERVAL : Long = 10 * 60 * 1000
 
     fun scheduleJob(context: Context) {
         Log.d("BPG", "Scheduling DataUpdateService. Check interval: ${CHECK_INTERVAL/1000/60} minutes")
