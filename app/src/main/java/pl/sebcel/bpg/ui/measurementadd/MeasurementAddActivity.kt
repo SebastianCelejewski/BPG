@@ -113,8 +113,9 @@ class MeasurementAddActivity : ComponentActivity() {
                         })
                         Button(onClick = {
                             viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
-                            val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
-                            startActivity(intent)
+                            finish()
+//                            val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
+//                            startActivity(intent)
                         }) {
                             Icon(Icons.Default.Check, contentDescription = stringResource(R.string.add_measurement_button_label))
                         }
