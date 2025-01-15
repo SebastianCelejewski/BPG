@@ -85,7 +85,7 @@ class MeasurementListActivity : ComponentActivity() {
                 Image(
                     painter = painterResource(R.drawable.ornament),
                     contentDescription = stringResource(R.string.app_name),
-                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                    modifier = Modifier.fillMaxWidth().padding(12.dp)
                 )
                 Surface(
                     color = MaterialTheme.colorScheme.surface,

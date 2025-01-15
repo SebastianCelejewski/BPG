@@ -66,7 +66,6 @@ private val daysOfWeek = BpgApplication.instance.resources.getStringArray(R.arra
 
 private val emojis = arrayOf(R.drawable.smiling_face, R.drawable.neutral_face, R.drawable.sad_face, R.drawable.angry_face)
 private val emojiDescriptions = arrayOf(R.string.pain_description_0, R.string.pain_description_1, R.string.pain_description_2, R.string.pain_description_3)
-//"0x1F642", "0x1F61E", "0x1F641", "0x1F621"
 
 private val painDescriptions = PainDescriptions()
 
@@ -77,9 +76,9 @@ data class DropDownItem(
 @Composable
 fun MeasurementListTable(
     measurements: List<Measurement>,
-    onDelete: (Measurement) -> Unit
+    onDelete: (Measurement) -> Unit,
     ) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.padding(top = 6.dp, bottom = 6.dp)) {
         items(measurements) {
             measurement -> MeasurementCard(measurement, onDelete)
         }

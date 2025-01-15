@@ -1,6 +1,5 @@
 package pl.sebcel.bpg.ui.measurementadd
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -40,7 +39,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
-import pl.sebcel.bpg.ui.measurementlist.MeasurementListActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.util.Date
 
@@ -114,8 +112,6 @@ class MeasurementAddActivity : ComponentActivity() {
                         Button(onClick = {
                             viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
                             finish()
-//                            val intent = Intent(Intent(baseContext, MeasurementListActivity::class.java))
-//                            startActivity(intent)
                         }) {
                             Icon(Icons.Default.Check, contentDescription = stringResource(R.string.add_measurement_button_label))
                         }
