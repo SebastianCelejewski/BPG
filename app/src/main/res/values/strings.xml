@@ -19,6 +19,7 @@
     <string name="cancel_button_label">Anuluj</string>
     <string name="add_button_label">Dodaj</string>
     <string name="delete_button_label">Usuń</string>
+    <string name="export_button_label">Eksportuj</string>
 
     <string name="delete_confirmation_title">Ostrzeżenie</string>
     <string name="delete_confirmation_text">Czy na pewno chcesz usunąć ten pomiar?</string>
