@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,10 +24,16 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -37,6 +44,8 @@ import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
 import pl.sebcel.bpg.data.local.database.model.Measurement
@@ -64,6 +73,8 @@ class MeasurementListActivity : ComponentActivity() {
     @Composable
     fun ListMeasurements(viewModel: MeasurementListViewModel = hiltViewModel()) {
         val items by viewModel.uiState.collectAsStateWithLifecycle()
+        val scope = rememberCoroutineScope()
+        val snackbarHostState = remember { SnackbarHostState() }
 
         Scaffold (
             topBar = {
@@ -80,6 +91,9 @@ class MeasurementListActivity : ComponentActivity() {
                     }
                 )
             },
+            snackbarHost = {
+                SnackbarHost(hostState = snackbarHostState)
+            },
             floatingActionButton = {
                 Row {
                     FloatingActionButton(onClick = { AddMeasurement() }) {
@@ -87,7 +101,7 @@ class MeasurementListActivity : ComponentActivity() {
                     }
                     if (items is MeasurementListUiState.Success) {
                         val measurements = (items as MeasurementListUiState.Success).data
-                        FloatingActionButton(onClick = { exportToExcel(measurements) }) {
+                        FloatingActionButton(onClick = { exportToExcel(measurements, snackbarHostState, scope) }) {
                             Icon(
                                 Icons.Default.Share,
                                 contentDescription = getString(R.string.export_button_label)
@@ -141,7 +155,7 @@ class MeasurementListActivity : ComponentActivity() {
 
     private fun askForPermissions(permissions: Array<String>, requestCode: Int) {
         Log.d("BPG", "Checking permissions")
-        var permissionsToRequest : MutableList<String> = mutableListOf<String>()
+        val permissionsToRequest : MutableList<String> = mutableListOf<String>()
         permissions.forEach {
             if (ContextCompat.checkSelfPermission(this@MeasurementListActivity, it) == PackageManager.PERMISSION_GRANTED) {
                 Log.d("BPG", "Permission $it is granted")
@@ -155,19 +169,44 @@ class MeasurementListActivity : ComponentActivity() {
         ActivityCompat.requestPermissions(this@MeasurementListActivity, permissions, requestCode)
 
         Log.d("BPG", "Checking if permissions were granted")
+        val permissionsNotGranted : MutableList<String> = mutableListOf()
         permissions.forEach {
             if (ContextCompat.checkSelfPermission(this@MeasurementListActivity, it) == PackageManager.PERMISSION_GRANTED) {
                 Log.d("BPG", "Permission $it is granted")
             } else {
                 Log.d("BPG", "Permission $it is not granted")
+                permissionsNotGranted.add(it)
             }
+        }
+
+        if (permissionsNotGranted.isNotEmpty()) {
+            throw Exception("Failed to get permissions necessary to perform the export: ${permissionsNotGranted.joinToString(", ")}")
         }
     }
 
-    private fun exportToExcel(measurements: List<Measurement>) {
+    private fun exportToExcel(measurements: List<Measurement>, snackbarHostState: SnackbarHostState, scope: CoroutineScope) {
         val requestId = 1
 
-        askForPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestId)
-        ExcelExporter.export(measurements)
+        try {
+            askForPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), requestId)
+            val fileName = ExcelExporter.export(measurements)
+            scope.launch {
+                val result = snackbarHostState.showSnackbar(message = getString(R.string.export_completed_toast_text) + fileName, duration = SnackbarDuration.Long, actionLabel = "Otwórz")
+                when (result) {
+                    SnackbarResult.ActionPerformed -> {
+
+                    }
+                    SnackbarResult.Dismissed -> {
+
+                    }
+                }
+
+            }
+        } catch (ex: Exception) {
+            scope.launch {
+                snackbarHostState.showSnackbar(message = getString(R.string.export_failed_toast_text) + ex.message, duration = SnackbarDuration.Long)
+            }
+            Log.e("BPG", "Export failed: ${ex.message}", ex)
+        }
     }
 }

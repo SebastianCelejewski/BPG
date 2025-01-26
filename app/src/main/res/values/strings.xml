@@ -30,6 +30,8 @@
     <string name="notification_channel_description">Notifications sent from Boli Pocia Główka application, e.g. to prompt to provide a new measurement.</string>
     <string name="data_update_notification_title">Czy boli Cię teraz główka?</string>
     <string name="data_update_notification_text">Kliknij aby wprowadzić nowy pomiar.</string>
+    <string name="export_completed_toast_text">Eksport danych zakończony powodzeniem. Nazwa pliku: </string>
+    <string name="export_failed_toast_text">Export danych nie powiódł się</string>
 
     <string-array name="days_of_the_week">
         <item>00</item>
