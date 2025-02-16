@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,6 +43,7 @@ import pl.sebcel.bpg.export.ExcelExporter
 import pl.sebcel.bpg.services.dataupdate.DataUpdateServiceScheduler
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
+import pl.sebcel.bpg.ui.trivia.TriviaActivity
 
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
@@ -85,17 +87,29 @@ class MeasurementListActivity : ComponentActivity() {
             },
             floatingActionButton = {
                 Row {
-                    FloatingActionButton(onClick = { AddMeasurement() }) {
+                    FloatingActionButton(
+                        onClick = { AddMeasurement() },
+                        modifier = Modifier.padding(3.dp)
+                    ) {
                         Icon(Icons.Default.Add, contentDescription = getString(R.string.add_button_label))
                     }
                     if (items is MeasurementListUiState.Success) {
                         val measurements = (items as MeasurementListUiState.Success).data
-                        FloatingActionButton(onClick = { ExcelExporter.exportToExcel(measurements, snackbarHostState, scope, this@MeasurementListActivity) }) {
+                        FloatingActionButton(
+                            onClick = { ExcelExporter.exportToExcel(measurements, snackbarHostState, scope, this@MeasurementListActivity) },
+                            modifier = Modifier.padding(3.dp)
+                        ) {
                             Icon(
                                 Icons.Default.Share,
                                 contentDescription = getString(R.string.export_button_label)
                             )
                         }
+                    }
+                    FloatingActionButton(
+                        onClick = { displayTrivia() },
+                        modifier = Modifier.padding(3.dp)
+                    ) {
+                        Icon(Icons.Default.Search, contentDescription = getString(R.string.trivia_button_label))
                     }
                 }
             }
@@ -127,6 +141,11 @@ class MeasurementListActivity : ComponentActivity() {
 
             }
         }
+    }
+
+    private fun displayTrivia() {
+        val intent = Intent(Intent(baseContext, TriviaActivity::class.java))
+        startActivity(intent)
     }
 
     @Preview

@@ -31,6 +31,10 @@
             android:exported="false"
             android:label="@string/add_measurement_activity_title"
             android:theme="@style/Theme.BPG" />
+        <activity android:name=".ui.trivia.TriviaActivity"
+            android:exported="false"
+            android:label="Trivia"
+            android:theme="@style/Theme.BPG" />
         <service
             android:name=".services.dataupdate.DataUpdateService"
             android:label="@string/data_update_service_title"
