@@ -37,7 +37,7 @@
     <string name="close_button_label">Zamknij</string>
 
     <string-array name="days_of_the_week">
-        <item>00</item>
+        <item>nd</item>
         <item>pn</item>
         <item>wt</item>
         <item>śr</item>

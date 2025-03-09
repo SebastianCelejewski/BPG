@@ -235,7 +235,7 @@ fun DateElement(measurement: Measurement) {
     val date = measurement.date
     val calendar = Calendar.getInstance()
     calendar.time = date
-    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)
+    val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1
     Text(
         text = "${dateFormatter.format(date)}, ${daysOfWeek[dayOfWeek]}",
         style = MaterialTheme.typography.titleLarge,

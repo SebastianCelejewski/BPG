@@ -102,7 +102,8 @@ object ExcelExporter {
 
         val file = File(directory, csvFile)
         val wbSettings: WorkbookSettings = WorkbookSettings()
-        wbSettings.setLocale(Locale.UK)
+        wbSettings.locale = Locale.UK
+        wbSettings.setRationalization(false) // workaround for java.lang.ArrayIndexOutOfBoundsException in jxl.biff.IndexMapping.getNewIndex
         val workbook: WritableWorkbook = Workbook.createWorkbook(file, wbSettings)
 
         val sheetA: WritableSheet = workbook.createSheet("Measurements", 0)
