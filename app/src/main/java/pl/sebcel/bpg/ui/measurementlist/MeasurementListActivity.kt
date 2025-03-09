@@ -1,7 +1,10 @@
 package pl.sebcel.bpg.ui.measurementlist
 
+import android.app.Activity
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -34,16 +37,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.di.FakeMeasurementRepository
+import pl.sebcel.bpg.data.local.database.model.Measurement
 import pl.sebcel.bpg.export.ExcelExporter
 import pl.sebcel.bpg.services.dataupdate.DataUpdateServiceScheduler
 import pl.sebcel.bpg.ui.measurementadd.MeasurementAddActivity
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import pl.sebcel.bpg.ui.trivia.TriviaActivity
+import java.io.File
 
 @AndroidEntryPoint
 class MeasurementListActivity : ComponentActivity() {
@@ -88,7 +95,7 @@ class MeasurementListActivity : ComponentActivity() {
             floatingActionButton = {
                 Row {
                     FloatingActionButton(
-                        onClick = { AddMeasurement() },
+                        onClick = { addMeasurement() },
                         modifier = Modifier.padding(3.dp)
                     ) {
                         Icon(Icons.Default.Add, contentDescription = getString(R.string.add_button_label))
@@ -96,12 +103,12 @@ class MeasurementListActivity : ComponentActivity() {
                     if (items is MeasurementListUiState.Success) {
                         val measurements = (items as MeasurementListUiState.Success).data
                         FloatingActionButton(
-                            onClick = { ExcelExporter.exportToExcel(measurements, snackbarHostState, scope, this@MeasurementListActivity) },
+                            onClick = { share(measurements, snackbarHostState, scope, this@MeasurementListActivity) }, // { ExcelExporter.exportToExcel(measurements, snackbarHostState, scope, this@MeasurementListActivity) },
                             modifier = Modifier.padding(3.dp)
                         ) {
                             Icon(
                                 Icons.Default.Share,
-                                contentDescription = getString(R.string.export_button_label)
+                                contentDescription = getString(R.string.share_button_label)
                             )
                         }
                     }
@@ -156,10 +163,35 @@ class MeasurementListActivity : ComponentActivity() {
         }
     }
 
-    fun AddMeasurement() {
+    private fun addMeasurement() {
         val intent = Intent(Intent(baseContext, MeasurementAddActivity::class.java))
         startActivity(intent)
     }
 
+    private fun share(measurements: List<Measurement>, snackbarHostState: SnackbarHostState, scope: CoroutineScope, activity: Activity) {
+        val exportedFileName = ExcelExporter.exportToExcel(measurements, snackbarHostState, scope, this@MeasurementListActivity)
 
+        if (exportedFileName != null) {
+            val requestFile = File(exportedFileName)
+            val uri = FileProvider.getUriForFile(activity, "pl.sebcel.bpg.fileprovider", requestFile)
+
+            Log.d("BPG", "Exported file name: $exportedFileName")
+            Log.d("BPG", "Exported file URI: $uri")
+
+            Log.d("BPG", "Creating intent")
+            val sendIntent: Intent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, getString(R.string.data_export_introductory_text))
+                putExtra(Intent.EXTRA_STREAM, uri)
+                type = "text/csv"
+            }
+
+            Log.d("BPG", "Granting permission to read the shared file")
+            sendIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+
+            Log.d("BPG", "Launching sharing activity")
+            startActivity(sendIntent)
+            Log.d("BPG", "Sharing completed")
+        }
+    }
 }

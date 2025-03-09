@@ -19,7 +19,7 @@
     <string name="cancel_button_label">Anuluj</string>
     <string name="add_button_label">Dodaj</string>
     <string name="delete_button_label">Usuń</string>
-    <string name="export_button_label">Eksportuj</string>
+    <string name="share_button_label">Udostępnij</string>
 
     <string name="delete_confirmation_title">Ostrzeżenie</string>
     <string name="delete_confirmation_text">Czy na pewno chcesz usunąć ten pomiar?</string>
@@ -31,7 +31,8 @@
     <string name="data_update_notification_title">Czy boli Cię teraz główka?</string>
     <string name="data_update_notification_text">Kliknij aby wprowadzić nowy pomiar.</string>
     <string name="export_completed_toast_text">Eksport danych zakończony powodzeniem. Nazwa pliku: </string>
-    <string name="export_failed_toast_text">Export danych nie powiódł się</string>
+    <string name="export_failed_toast_text">Export danych nie powiódł się. Błąd: </string>
+    <string name="data_export_introductory_text">Załącznik zawiera wyeksportowane dane z aplikacji Boli Pocia Główka.</string>
     <string name="trivia_button_label">Trivia\n</string>
     <string name="close_button_label">Zamknij</string>
 

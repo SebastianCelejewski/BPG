@@ -2,15 +2,12 @@ package pl.sebcel.bpg.export
 
 import android.Manifest
 import android.app.Activity
-import android.content.Context
 import android.content.pm.PackageManager
-import android.os.Environment
 import android.util.Log
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import jxl.DateCell
 import java.io.File
 
 import jxl.Workbook;
@@ -36,7 +33,7 @@ object ExcelExporter {
     private val fileNameDateFormatter = SimpleDateFormat("yyyy-MM-dd_HH-mm", Locale.UK)
     private val cellDateFormatter = DateFormat("yyyy-MM-dd HH:mm")
 
-    fun exportToExcel(measurements: List<Measurement>, snackbarHostState: SnackbarHostState, scope: CoroutineScope, activity: Activity) {
+    fun exportToExcel(measurements: List<Measurement>, snackbarHostState: SnackbarHostState, scope: CoroutineScope, activity: Activity) : String? {
         val requestId = 1
 
         try {
@@ -46,11 +43,13 @@ object ExcelExporter {
                 snackbarHostState.showSnackbar(message = activity.getString(R.string.export_completed_toast_text) + fileName, duration = SnackbarDuration.Long)
             }
             Log.d("BPG", "Export successful to file $fileName")
+            return fileName
         } catch (ex: Exception) {
             scope.launch {
                 snackbarHostState.showSnackbar(message = activity.getString(R.string.export_failed_toast_text) + ex.message, duration = SnackbarDuration.Long)
             }
             Log.e("BPG", "Export failed: ${ex.message}", ex)
+            return null
         }
     }
 
