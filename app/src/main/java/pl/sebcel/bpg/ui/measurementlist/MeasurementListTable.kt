@@ -302,9 +302,9 @@ private fun MeasurementListTableRowPreview() {
     BPGTheme {
         MeasurementListTable(
             listOf(
-                Measurement(date = Date(), pain = 1, comment = "Sample comment 1", weatherDescription = "Sunny", periodState = "normal", location = "home"),
-                Measurement(date = Date(), pain = 2, comment = "Sample comment 2", weatherDescription = "Rain", periodState = "normal", location = "home"),
-                Measurement(date = Date(), pain = 0, comment = "Sample comment 3", weatherDescription = "Fog", periodState = "bleeding", location = "school")
+                Measurement(date = Date(), pain = 1, comment = "Sample comment 1", weatherDescription = "Sunny", periodStateDescription = "normal", locationDescription = "home", durationDescription = "30 min"),
+                Measurement(date = Date(), pain = 2, comment = "Sample comment 2", weatherDescription = "Rain", periodStateDescription = "normal", locationDescription = "home", durationDescription = "since 12 am"),
+                Measurement(date = Date(), pain = 0, comment = "Sample comment 3", weatherDescription = "Fog", periodStateDescription = "bleeding", locationDescription = "school", durationDescription = "just now")
             ),
             onDelete = TODO(),
         )

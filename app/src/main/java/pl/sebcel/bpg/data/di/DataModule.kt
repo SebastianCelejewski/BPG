@@ -45,7 +45,7 @@ class FakeMeasurementRepository @Inject constructor() : MeasurementRepository {
 }
 
 val fakeMeasurements = listOf(
-    Measurement(date = Date(), pain = 1, comment = "Fake data 1", weatherDescription = "Weather 1", periodState = "State 1", location = "Location 1"),
-    Measurement(date = Date(), pain = 2, comment = "Fake data 2", weatherDescription = "Weather 2", periodState = "State 2", location = "Location 2"),
-    Measurement(date = Date(), pain = 0, comment = "Fake data 3", weatherDescription = "Weather 3", periodState = "State 3", location = "Location 3")
+    Measurement(date = Date(), pain = 1, comment = "Fake data 1", weatherDescription = "Weather 1", periodStateDescription = "State 1", locationDescription = "Location 1", durationDescription = "Duration 1"),
+    Measurement(date = Date(), pain = 2, comment = "Fake data 2", weatherDescription = "Weather 2", periodStateDescription = "State 2", locationDescription = "Location 2", durationDescription = "Duration 2"),
+    Measurement(date = Date(), pain = 0, comment = "Fake data 3", weatherDescription = "Weather 3", periodStateDescription = "State 3", locationDescription = "Location 3", durationDescription = "Duration 3")
 )

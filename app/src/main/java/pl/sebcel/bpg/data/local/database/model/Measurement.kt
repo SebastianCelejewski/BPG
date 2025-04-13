@@ -23,9 +23,11 @@ data class Measurement (
 
     val weatherDescription: String?,
 
-    val periodState: String?,
+    val periodStateDescription: String?,
 
-    val location: String?
+    val locationDescription: String?,
+
+    val durationDescription: String?
 ) {
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0

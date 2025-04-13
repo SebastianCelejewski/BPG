@@ -63,10 +63,11 @@ class MeasurementAddActivity : ComponentActivity() {
 
         var measurementDate by remember { mutableStateOf(Date()) }
         var pain by remember { mutableIntStateOf(0) }
-        var comment by remember { mutableStateOf("") }
         var weatherDescription by remember { mutableStateOf("") }
-        var periodState by remember { mutableStateOf("") }
-        var location by remember { mutableStateOf("") }
+        var periodStateDescription by remember { mutableStateOf("") }
+        var locationDescription by remember { mutableStateOf("") }
+        var durationDescription by remember { mutableStateOf("") }
+        var comment by remember { mutableStateOf("") }
 
         Scaffold (
             topBar = {
@@ -112,18 +113,20 @@ class MeasurementAddActivity : ComponentActivity() {
                         MeasurementDatePicker(modifier = Modifier.height(36.dp))
                         MeasurementHeadachePicker(onSelect = { pain = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_weather_label), onSelect = { weatherDescription = it })
-                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodState = it })
-                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_location_label), onSelect = { location = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodStateDescription = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_location_label), onSelect = { locationDescription = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_duration_label), onSelect = { durationDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_comment_label), onSelect = { comment = it })
                         Button(onClick = {
                             viewModel.addMeasurement(
                                 Measurement(
                                     date = measurementDate,
                                     pain = pain,
-                                    comment = comment,
                                     weatherDescription = weatherDescription,
-                                    periodState = periodState,
-                                    location = location
+                                    periodStateDescription = periodStateDescription,
+                                    locationDescription = locationDescription,
+                                    durationDescription = durationDescription,
+                                    comment = comment
                                 ))
                             finish()
                         }) {
