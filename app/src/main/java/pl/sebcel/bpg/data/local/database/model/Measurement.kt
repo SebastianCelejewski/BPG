@@ -1,5 +1,6 @@
 package pl.sebcel.bpg.data.local.database.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Entity
@@ -18,13 +19,17 @@ data class Measurement (
 
     val pain : Int,
 
-    val comment : String
+    val comment : String,
+
+    val weatherDescription: String?,
+
+    val periodState: String?,
+
+    val location: String?
 ) {
     @PrimaryKey(autoGenerate = true)
     var uid: Int = 0
 }
-
-
 
 @Dao
 interface MeasurementDao {

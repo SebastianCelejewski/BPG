@@ -12,7 +12,10 @@
 
     <string name="bpg_database_name">BPG</string>
 
-    <string name="measurement_comment_label">Okoliczności</string>
+    <string name="measurement_weather_label">Aktualna pogoda</string>
+    <string name="measurement_period_state_label">Sytuacja maciczna</string>
+    <string name="measurement_location_label">Miejsce, w którym jesteś</string>
+    <string name="measurement_comment_label">Inne okoliczności</string>
     <string name="measurement_date_field_label">Data pomiaru</string>
     <string name="select_measurement_date_button_label">Wybierz datę</string>
 

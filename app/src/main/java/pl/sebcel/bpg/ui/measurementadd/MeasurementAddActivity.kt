@@ -59,9 +59,12 @@ class MeasurementAddActivity : ComponentActivity() {
     @Composable
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
-        var measurementDate by remember { mutableStateOf(Date())}
+        var measurementDate by remember { mutableStateOf(Date()) }
         var pain by remember { mutableIntStateOf(0) }
-        var comment by remember { mutableStateOf("")}
+        var comment by remember { mutableStateOf("") }
+        var weatherDescription by remember { mutableStateOf("") }
+        var periodState by remember { mutableStateOf("") }
+        var location by remember { mutableStateOf("") }
 
         Scaffold (
             topBar = {
@@ -103,14 +106,21 @@ class MeasurementAddActivity : ComponentActivity() {
                         modifier = Modifier.padding(16.dp)
                     ) {
                         MeasurementDatePicker(modifier = Modifier.height(36.dp))
-                        MeasurementHeadachePicker(onSelect = {
-                            pain = it
-                        })
-                        MeasurementComment(onSelect = {
-                            comment = it
-                        })
+                        MeasurementHeadachePicker(onSelect = { pain = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_weather_label), onSelect = { weatherDescription = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodState = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_location_label), onSelect = { location = it })
+                        MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_comment_label), onSelect = { comment = it })
                         Button(onClick = {
-                            viewModel.addMeasurement(Measurement(date = measurementDate, pain = pain, comment = comment))
+                            viewModel.addMeasurement(
+                                Measurement(
+                                    date = measurementDate,
+                                    pain = pain,
+                                    comment = comment,
+                                    weatherDescription = weatherDescription,
+                                    periodState = periodState,
+                                    location = location
+                                ))
                             finish()
                         }) {
                             Icon(Icons.Default.Check, contentDescription = stringResource(R.string.add_measurement_button_label))

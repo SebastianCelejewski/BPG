@@ -110,14 +110,20 @@ object ExcelExporter {
 
         sheetA.addCell(Label(0, 0, "Data"))
         sheetA.addCell(Label(1, 0, "Poziom bólu"))
-        sheetA.addCell(Label(2, 0, "Uwagi"))
+        sheetA.addCell(Label(2, 0, "Pogoda"))
+        sheetA.addCell(Label(3, 0, "Stan maciczny"))
+        sheetA.addCell(Label(4, 0, "Lokalizacja"))
+        sheetA.addCell(Label(5, 0, "Inne okoliczności"))
 
         var rowIdx = 1
         measurements.forEach{measurement -> run {
             Log.d("BPG", "Exporting row $rowIdx: ${measurement.date}, ${measurement.pain}, ${measurement.comment}")
             sheetA.addCell(DateTime(0, rowIdx, measurement.date, WritableCellFormat(cellDateFormatter)))
             sheetA.addCell(Number(1, rowIdx, measurement.pain.toDouble()))
-            sheetA.addCell(Label(2, rowIdx, measurement.comment))
+            sheetA.addCell(Label(2, rowIdx, measurement.weatherDescription))
+            sheetA.addCell(Label(3, rowIdx, measurement.periodState))
+            sheetA.addCell(Label(4, rowIdx, measurement.location))
+            sheetA.addCell(Label(5, rowIdx, measurement.comment))
             rowIdx++
         }}
 
