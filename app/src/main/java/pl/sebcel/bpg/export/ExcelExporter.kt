@@ -116,16 +116,18 @@ object ExcelExporter {
         sheetA.addCell(Label(5, 0, "Inne okoliczności"))
 
         var rowIdx = 1
-        measurements.forEach{measurement -> run {
-            Log.d("BPG", "Exporting row $rowIdx: ${measurement.date}, ${measurement.pain}, ${measurement.comment}")
-            sheetA.addCell(DateTime(0, rowIdx, measurement.date, WritableCellFormat(cellDateFormatter)))
-            sheetA.addCell(Number(1, rowIdx, measurement.pain.toDouble()))
-            sheetA.addCell(Label(2, rowIdx, measurement.weatherDescription))
-            sheetA.addCell(Label(3, rowIdx, measurement.periodState))
-            sheetA.addCell(Label(4, rowIdx, measurement.location))
-            sheetA.addCell(Label(5, rowIdx, measurement.comment))
-            rowIdx++
-        }}
+        measurements
+            .sortedBy{measurement: Measurement -> measurement.date}
+            .forEach{measurement -> run {
+                Log.d("BPG", "Exporting row $rowIdx: ${measurement.date}, ${measurement.pain}, ${measurement.comment}")
+                sheetA.addCell(DateTime(0, rowIdx, measurement.date, WritableCellFormat(cellDateFormatter)))
+                sheetA.addCell(Number(1, rowIdx, measurement.pain.toDouble()))
+                sheetA.addCell(Label(2, rowIdx, measurement.weatherDescription))
+                sheetA.addCell(Label(3, rowIdx, measurement.periodState))
+                sheetA.addCell(Label(4, rowIdx, measurement.location))
+                sheetA.addCell(Label(5, rowIdx, measurement.comment))
+                rowIdx++
+            } }
 
         Log.d("BPG", "Rows added")
 
