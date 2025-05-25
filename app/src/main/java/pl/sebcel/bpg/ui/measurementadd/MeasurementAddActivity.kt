@@ -1,6 +1,7 @@
 package pl.sebcel.bpg.ui.measurementadd
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +25,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -62,6 +64,7 @@ class MeasurementAddActivity : ComponentActivity() {
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
         var measurementDate by remember { mutableStateOf(Date()) }
+        var measurementTime by remember { mutableStateOf(Date()) }
         var pain by remember { mutableIntStateOf(0) }
         var weatherDescription by remember { mutableStateOf("") }
         var periodStateDescription by remember { mutableStateOf("") }
@@ -110,7 +113,8 @@ class MeasurementAddActivity : ComponentActivity() {
                             .padding(16.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        MeasurementDatePicker(modifier = Modifier.height(36.dp))
+                        MeasurementDatePicker(modifier = Modifier.height(36.dp), onSelect = { measurementDate = it})
+                        MeasurementTimePicker(onSelect = {measurementTime = it})
                         MeasurementHeadachePicker(onSelect = { pain = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_weather_label), onSelect = { weatherDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodStateDescription = it })
@@ -118,9 +122,11 @@ class MeasurementAddActivity : ComponentActivity() {
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_duration_label), onSelect = { durationDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_comment_label), onSelect = { comment = it })
                         Button(onClick = {
+                            Log.d("BPG", "MeasurementDate: $measurementDate")
+                            Log.d("BPG", "MeasurementTime: $measurementTime")
                             viewModel.addMeasurement(
                                 Measurement(
-                                    date = measurementDate,
+                                    date = Date(measurementDate.time + measurementTime.time),
                                     pain = pain,
                                     weatherDescription = weatherDescription,
                                     periodStateDescription = periodStateDescription,

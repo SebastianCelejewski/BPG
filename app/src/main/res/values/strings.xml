@@ -39,6 +39,8 @@
     <string name="data_export_introductory_text">Załącznik zawiera wyeksportowane dane z aplikacji Boli Pocia Główka.</string>
     <string name="trivia_button_label">Trivia\n</string>
     <string name="close_button_label">Zamknij</string>
+    <string name="measurement_time_field_label">Czas pomiaru</string>
+    <string name="select_measurement_time_button_label">Dutki</string>
 
     <string-array name="days_of_the_week">
         <item>nd</item>

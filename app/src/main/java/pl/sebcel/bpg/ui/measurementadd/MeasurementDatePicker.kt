@@ -31,7 +31,7 @@ import java.util.Locale
 private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 @Composable
-fun MeasurementDatePicker(modifier : Modifier = Modifier) {
+fun MeasurementDatePicker(modifier : Modifier = Modifier, onSelect: (Date) -> Unit) {
     var showModal by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf<Long?>(null) }
 
@@ -41,6 +41,9 @@ fun MeasurementDatePicker(modifier : Modifier = Modifier) {
         DatePickerModal(
             onDateSelected = {
                 selectedDate = it
+                onSelect(
+                    it?.let { it1 -> Date(it1) } ?: Date()
+                )
                 showModal = false
             },
             onDismiss = { showModal = false }
