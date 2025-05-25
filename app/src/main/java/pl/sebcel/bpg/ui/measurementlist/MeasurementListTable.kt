@@ -192,10 +192,24 @@ fun MeasurementRow(measurement: Measurement) {
             Spacer(modifier = Modifier.width(10.dp))
             EmojiElement(measurement, Modifier.fillMaxHeight())
         }
-        if (measurement.comment.isNotEmpty()) {
+        val textComponents = mutableListOf<String>()
+
+        if (!measurement.weatherDescription.isNullOrEmpty()) {
+            textComponents.add(measurement.weatherDescription)
+        }
+        if (!measurement.periodStateDescription.isNullOrEmpty()) {
+            textComponents.add(measurement.periodStateDescription)
+        }
+        if (!measurement.locationDescription.isNullOrEmpty()) {
+            textComponents.add(measurement.locationDescription)
+        }
+        if (!measurement.durationDescription.isNullOrEmpty()) {
+            textComponents.add(measurement.durationDescription)
+        }
+        if (textComponents.size > 0) {
             Row(modifier = Modifier.padding(all = 0.dp)) {
                 Text(
-                    measurement.comment,
+                    text = textComponents.joinToString(),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onTertiary,
                     fontSize = 10.sp,
@@ -296,9 +310,9 @@ fun AlertDialogExample(
     )
 }
 
-@Preview(showBackground = true)
+@Preview
 @Composable
-private fun MeasurementListTableRowPreview() {
+fun MeasurementListTableRowPreview() {
     BPGTheme {
         MeasurementListTable(
             listOf(
