@@ -20,7 +20,6 @@ import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.isTraceInProgress
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,33 +36,14 @@ import java.util.Date
 
 @Composable
 fun MeasurementTimePicker(initialDateAndTime : Date, onSelect : (Date) -> Unit) {
-    var showModal by remember { mutableStateOf(false) }
     var selectedTime by remember { mutableStateOf<Date>(initialDateAndTime)}
-
-    Log.d("BPG", "Creating measurementTimePicker for date $initialDateAndTime")
 
     TimeField(initialDateAndTime = initialDateAndTime,
         onSelect = {
-            Log.d("BPG1", "MeasurementTimePicker.onTimeSelected, selectedTime: $it")
             selectedTime = it
-            Log.d("BPG1", "Output date: ${selectedTime}")
             onSelect(selectedTime)
-            showModal = false
          }
     )
-
-    if (showModal) {
-        TimePickerModal(
-            initialDateAndTime = initialDateAndTime,
-            onTimeSelected = {
-                Log.d("BPG3", "TimeField.onTimeSelected, selectedTime: $it")
-                selectedTime = it
-                onSelect(it)
-                showModal = false
-            },
-            onDismiss = { showModal = false }
-        )
-    }
 }
 
 @Composable
@@ -71,8 +51,6 @@ fun TimeField(
     initialDateAndTime : Date,
     modifier: Modifier = Modifier,
     onSelect : (Date) -> Unit) {
-
-    Log.d("BPG", "Creating TimeField with initial date $initialDateAndTime")
 
     var selectedTime by remember { mutableStateOf<Date>(initialDateAndTime) }
     var showModal by remember { mutableStateOf(false) }
@@ -98,6 +76,18 @@ fun TimeField(
                 }
             }
     )
+
+    if (showModal) {
+        TimePickerModal(
+            initialDateAndTime = initialDateAndTime,
+            onTimeSelected = {
+                selectedTime = it
+                onSelect(it)
+                showModal = false
+            },
+            onDismiss = { showModal = false }
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -107,8 +97,6 @@ fun TimePickerModal(
     onTimeSelected: (Date) -> Unit,
     onDismiss: () -> Unit
 ) {
-    Log.d("BPG", "Creating TimePickerModal with initial date $initialDateAndTime")
-
     val currentTime = Calendar.getInstance()
     currentTime.time = initialDateAndTime
     val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
@@ -118,14 +106,8 @@ fun TimePickerModal(
     val timePickerState = rememberTimePickerState(initialHour, initialMinute, is24Hour)
 
     TimePickerDialog(
-        onDismiss = {
-            Log.d("BPG4", "TimePickerModal.onDismiss")
-            onDismiss()
-                    },
-        onConfirm = {
-            Log.d("BPG4", "TimePickerModal.onConfirm, timePickerState: ${timePickerState.hour}:${timePickerState.minute}")
-            onTimeSelected(convertHourAndMinuteToDate(timePickerState.hour, timePickerState.minute))
-        }
+        onDismiss = { onDismiss() },
+        onConfirm = { onTimeSelected(convertHourAndMinuteToDate(timePickerState.hour, timePickerState.minute)) }
     ) {
         TimePicker(
             state = timePickerState,

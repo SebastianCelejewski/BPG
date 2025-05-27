@@ -33,28 +33,16 @@ private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 @Composable
 fun MeasurementDatePicker(initialDateAndTime : Date, onSelect: (Date) -> Unit) {
-    var showModal by remember { mutableStateOf(false) }
     var selectedDate by remember { mutableStateOf<Date>(initialDateAndTime) }
 
-    Log.d("BPG", "Initial date setting for date picker: $selectedDate")
-
-    DateField(initialDateAndTime)
-
-    if (showModal) {
-        DatePickerModal(
-            initialDate = selectedDate,
-            onDateSelected = {
-                selectedDate = it
-                onSelect(it)
-                showModal = false
-            },
-            onDismiss = { showModal = false }
-        )
-    }
+    DateField(initialDateAndTime, onDataSelected = {
+        selectedDate = it
+        onSelect(it)
+    })
 }
 
 @Composable
-fun DateField(initialDate : Date, modifier: Modifier = Modifier) {
+fun DateField(initialDate : Date, onDataSelected: (Date) -> Unit, modifier: Modifier = Modifier) {
     var selectedDate by remember { mutableStateOf<Date>(initialDate) }
     var showModal by remember { mutableStateOf(false) }
 
@@ -82,7 +70,10 @@ fun DateField(initialDate : Date, modifier: Modifier = Modifier) {
     if (showModal) {
         DatePickerModal(
             initialDate = selectedDate,
-            onDateSelected = { selectedDate = it },
+            onDateSelected = {
+                selectedDate = it
+                onDataSelected(selectedDate)
+                             },
             onDismiss = { showModal = false }
         )
     }
@@ -101,7 +92,6 @@ fun DatePickerModal(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                Log.d("BPG", "Date picker state: $datePickerState")
                 if (datePickerState.selectedDateMillis != null) {
                     onDateSelected(Date(datePickerState.selectedDateMillis!!))
                 }

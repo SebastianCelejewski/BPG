@@ -43,19 +43,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
+import pl.sebcel.bpg.extensions.stripDate
+import pl.sebcel.bpg.extensions.stripHours
 import pl.sebcel.bpg.ui.theme.BPGTheme
-import java.text.SimpleDateFormat
 import java.util.Date
-
-fun Date.stripHours() : Date {
-    val df = SimpleDateFormat.getDateInstance()
-    return df.parse(df.format(this))!!
-}
-
-fun Date.stripDate() : Date {
-    val df = SimpleDateFormat.getTimeInstance()
-    return df.parse(df.format(this))!!
-}
 
 @AndroidEntryPoint
 class MeasurementAddActivity : ComponentActivity() {
@@ -133,8 +124,6 @@ class MeasurementAddActivity : ComponentActivity() {
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_duration_label), onSelect = { durationDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_comment_label), onSelect = { comment = it })
                         Button(onClick = {
-                            Log.d("BPG", "MeasurementDate: $measurementDate")
-                            Log.d("BPG", "MeasurementTime: $measurementTime")
                             viewModel.addMeasurement(
                                 Measurement(
                                     date = Date(measurementDate.time + measurementTime.time),
@@ -163,11 +152,5 @@ class MeasurementAddActivity : ComponentActivity() {
         BPGTheme {
             AddNewMeasurement()
         }
-    }
-
-    private fun getCurrentDateWithoutTime(): Date {
-        val sdf = SimpleDateFormat.getDateInstance()
-        val date = sdf.parse(sdf.format(Date())) as Date
-        return date
     }
 }
