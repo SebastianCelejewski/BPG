@@ -1,5 +1,6 @@
 package pl.sebcel.bpg.ui.measurementadd
 
+import android.util.Log
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
@@ -31,19 +32,20 @@ import java.util.Locale
 private val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 @Composable
-fun MeasurementDatePicker(modifier : Modifier = Modifier, onSelect: (Date) -> Unit) {
+fun MeasurementDatePicker(initialDateAndTime : Date, onSelect: (Date) -> Unit) {
     var showModal by remember { mutableStateOf(false) }
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+    var selectedDate by remember { mutableStateOf<Date>(initialDateAndTime) }
 
-    DateField()
+    Log.d("BPG", "Initial date setting for date picker: $selectedDate")
+
+    DateField(initialDateAndTime)
 
     if (showModal) {
         DatePickerModal(
+            initialDate = selectedDate,
             onDateSelected = {
                 selectedDate = it
-                onSelect(
-                    it?.let { it1 -> Date(it1) } ?: Date()
-                )
+                onSelect(it)
                 showModal = false
             },
             onDismiss = { showModal = false }
@@ -52,19 +54,15 @@ fun MeasurementDatePicker(modifier : Modifier = Modifier, onSelect: (Date) -> Un
 }
 
 @Composable
-fun DateField(modifier: Modifier = Modifier) {
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+fun DateField(initialDate : Date, modifier: Modifier = Modifier) {
+    var selectedDate by remember { mutableStateOf<Date>(initialDate) }
     var showModal by remember { mutableStateOf(false) }
 
-    if (selectedDate == null) {
-        selectedDate = Date().time
-    }
-
     OutlinedTextField(
-        value = selectedDate?.let { convertMillisToDate(it) } ?: formatter.format(Date()),
+        value = formatter.format(selectedDate),
         onValueChange = { },
         label = { Text(BpgApplication.instance.getString(R.string.measurement_date_field_label)) },
-        placeholder = { Text("MM/DD/YYYY") },
+        placeholder = { Text(formatter.toPattern()) },
         trailingIcon = {
             Icon(Icons.Default.DateRange, contentDescription = BpgApplication.instance.getString(R.string.select_measurement_date_button_label))
         },
@@ -72,9 +70,6 @@ fun DateField(modifier: Modifier = Modifier) {
             .fillMaxWidth()
             .pointerInput(selectedDate) {
                 awaitEachGesture {
-                    // Modifier.clickable doesn't work for text fields, so we use Modifier.pointerInput
-                    // in the Initial pass to observe events before the text field consumes them
-                    // in the Main pass.
                     awaitFirstDown(pass = PointerEventPass.Initial)
                     val upEvent = waitForUpOrCancellation(pass = PointerEventPass.Initial)
                     if (upEvent != null) {
@@ -86,6 +81,7 @@ fun DateField(modifier: Modifier = Modifier) {
 
     if (showModal) {
         DatePickerModal(
+            initialDate = selectedDate,
             onDateSelected = { selectedDate = it },
             onDismiss = { showModal = false }
         )
@@ -95,16 +91,20 @@ fun DateField(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DatePickerModal(
-    onDateSelected: (Long?) -> Unit,
+    initialDate : Date,
+    onDateSelected: (Date) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val datePickerState = rememberDatePickerState()
+    val datePickerState = rememberDatePickerState(initialDate.time)
 
     DatePickerDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = {
-                onDateSelected(datePickerState.selectedDateMillis)
+                Log.d("BPG", "Date picker state: $datePickerState")
+                if (datePickerState.selectedDateMillis != null) {
+                    onDateSelected(Date(datePickerState.selectedDateMillis!!))
+                }
                 onDismiss()
             }) {
                 Text("OK")
@@ -118,8 +118,4 @@ fun DatePickerModal(
     ) {
         DatePicker(state = datePickerState)
     }
-}
-
-fun convertMillisToDate(millis: Long): String {
-    return formatter.format(Date(millis))
 }

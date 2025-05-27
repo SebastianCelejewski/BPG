@@ -44,7 +44,18 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
 import pl.sebcel.bpg.ui.theme.BPGTheme
+import java.text.SimpleDateFormat
 import java.util.Date
+
+fun Date.stripHours() : Date {
+    val df = SimpleDateFormat.getDateInstance()
+    return df.parse(df.format(this))!!
+}
+
+fun Date.stripDate() : Date {
+    val df = SimpleDateFormat.getTimeInstance()
+    return df.parse(df.format(this))!!
+}
 
 @AndroidEntryPoint
 class MeasurementAddActivity : ComponentActivity() {
@@ -63,8 +74,8 @@ class MeasurementAddActivity : ComponentActivity() {
     @Composable
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
-        var measurementDate by remember { mutableStateOf(Date()) }
-        var measurementTime by remember { mutableStateOf(Date()) }
+        var measurementDate by remember { mutableStateOf(Date().stripHours()) }
+        var measurementTime by remember { mutableStateOf(Date().stripDate()) }
         var pain by remember { mutableIntStateOf(0) }
         var weatherDescription by remember { mutableStateOf("") }
         var periodStateDescription by remember { mutableStateOf("") }
@@ -113,8 +124,8 @@ class MeasurementAddActivity : ComponentActivity() {
                             .padding(16.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
-                        MeasurementDatePicker(modifier = Modifier.height(36.dp), onSelect = { measurementDate = it})
-                        MeasurementTimePicker(onSelect = {measurementTime = it})
+                        MeasurementDatePicker(initialDateAndTime = measurementDate, onSelect = {measurementDate = it})
+                        MeasurementTimePicker(initialDateAndTime = measurementTime, onSelect = {measurementTime = it})
                         MeasurementHeadachePicker(onSelect = { pain = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_weather_label), onSelect = { weatherDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodStateDescription = it })
@@ -152,5 +163,11 @@ class MeasurementAddActivity : ComponentActivity() {
         BPGTheme {
             AddNewMeasurement()
         }
+    }
+
+    private fun getCurrentDateWithoutTime(): Date {
+        val sdf = SimpleDateFormat.getDateInstance()
+        val date = sdf.parse(sdf.format(Date())) as Date
+        return date
     }
 }
