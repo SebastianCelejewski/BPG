@@ -25,10 +25,6 @@
     <string name="delete_button_label">Usuń</string>
     <string name="share_button_label">Udostępnij</string>
 
-    <string name="delete_confirmation_title">Ostrzeżenie</string>
-    <string name="delete_confirmation_text">Czy na pewno chcesz usunąć ten pomiar?</string>
-    <string name="delete_confirmation_button_label">Potwierdź</string>
-
     <string name="notification_channel_id">BPG Channel</string>
     <string name="notification_channel_name">BPG Notifications</string>
     <string name="notification_channel_description">Notifications sent from Boli Pocia Główka application, e.g. to prompt to provide a new measurement.</string>

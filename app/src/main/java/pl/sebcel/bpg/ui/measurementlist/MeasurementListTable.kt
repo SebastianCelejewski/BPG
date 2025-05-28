@@ -20,16 +20,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +34,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
@@ -87,7 +81,6 @@ fun MeasurementListTable(
 
 @Composable
 fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, modifier : Modifier = Modifier) {
-    val openAlertDialog = remember { mutableStateOf(false) }
 
     val shape = RectangleShape
 
@@ -102,7 +95,6 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
     )
     val onItemClick = {
         onDelete(measurement)
-        openAlertDialog.value = true
     }
 
     Card(
@@ -156,22 +148,6 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
                     }
                 )
             }
-        }
-    }
-
-    when {
-        openAlertDialog.value -> {
-            AlertDialogExample(
-                onConfirmation = {
-                    openAlertDialog.value = false
-                },
-                onDismissRequest = {
-                    openAlertDialog.value = false
-                },
-                dialogTitle = BpgApplication.instance.getString(R.string.delete_confirmation_title),
-                dialogText = BpgApplication.instance.getString(R.string.delete_confirmation_text),
-                icon = Icons.Default.Info
-            )
         }
     }
 }
@@ -265,48 +241,6 @@ fun TimeElement(measurement: Measurement) {
         style = MaterialTheme.typography.titleLarge,
         color = MaterialTheme.colorScheme.onTertiary,
         fontSize = 16.sp
-    )
-}
-
-@Composable
-fun AlertDialogExample(
-    onDismissRequest: () -> Unit,
-    onConfirmation: () -> Unit,
-    dialogTitle: String,
-    dialogText: String,
-    icon: ImageVector,
-) {
-    AlertDialog(
-        icon = {
-            Icon(icon, contentDescription = "Example Icon")
-        },
-        title = {
-            Text(text = dialogTitle)
-        },
-        text = {
-            Text(text = dialogText)
-        },
-        onDismissRequest = {
-            onDismissRequest()
-        },
-        confirmButton = {
-            TextButton(
-                onClick = {
-                    onConfirmation()
-                }
-            ) {
-                Text(BpgApplication.instance.getString(R.string.delete_confirmation_button_label))
-            }
-        },
-        dismissButton = {
-            TextButton(
-                onClick = {
-                    onDismissRequest()
-                }
-            ) {
-                Text(BpgApplication.instance.getString(R.string.cancel_button_label))
-            }
-        }
     )
 }
 

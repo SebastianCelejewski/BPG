@@ -35,7 +35,7 @@ data class Measurement (
 
 @Dao
 interface MeasurementDao {
-    @Query("SELECT * FROM measurement ORDER BY uid DESC")
+    @Query("SELECT * FROM measurement ORDER BY date DESC")
     fun getMeasurements(): Flow<List<Measurement>>
 
     @Query("SELECT date FROM measurement ORDER BY date DESC LIMIT 1")
