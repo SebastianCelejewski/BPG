@@ -2,7 +2,6 @@
 
 package pl.sebcel.bpg.ui.measurementadd
 
-import android.util.Log
 import androidx.compose.material3.TimePicker
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -17,7 +16,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TimePickerState
-import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,15 +28,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import pl.sebcel.bpg.BpgApplication
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.ui.theme.BPGTheme
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Date
 
 @Composable
-fun MeasurementTimePicker(initialDateAndTime : Date, onSelect : (Date) -> Unit) {
-    var selectedTime by remember { mutableStateOf<Date>(initialDateAndTime)}
+fun MeasurementTimePicker(initialTimePickerState: TimePickerState, onSelect: (TimePickerState) -> Unit) {
+    var selectedTime: TimePickerState
 
-    TimeField(initialDateAndTime = initialDateAndTime,
+    TimeField(initialDateAndTime = initialTimePickerState,
         onSelect = {
             selectedTime = it
             onSelect(selectedTime)
@@ -48,16 +43,15 @@ fun MeasurementTimePicker(initialDateAndTime : Date, onSelect : (Date) -> Unit) 
 
 @Composable
 fun TimeField(
-    initialDateAndTime : Date,
+    initialDateAndTime : TimePickerState,
     modifier: Modifier = Modifier,
-    onSelect : (Date) -> Unit) {
+    onSelect : (TimePickerState) -> Unit) {
 
-    var selectedTime by remember { mutableStateOf<Date>(initialDateAndTime) }
+    var selectedTime = initialDateAndTime
     var showModal by remember { mutableStateOf(false) }
-    val df = SimpleDateFormat("HH:mm")
 
     OutlinedTextField(
-        value = df.format(selectedTime),
+        value = "${String.format("%02d", selectedTime.hour)}:${String.format("%02d",selectedTime.minute)}",
         onValueChange = { },
         label = { Text(BpgApplication.instance.getString(R.string.measurement_time_field_label)) },
         placeholder = { Text("hh:mm") },
@@ -79,7 +73,7 @@ fun TimeField(
 
     if (showModal) {
         TimePickerModal(
-            initialDateAndTime = initialDateAndTime,
+            timePickerState = initialDateAndTime,
             onTimeSelected = {
                 selectedTime = it
                 onSelect(it)
@@ -93,27 +87,20 @@ fun TimeField(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerModal(
-    initialDateAndTime : Date,
-    onTimeSelected: (Date) -> Unit,
+    timePickerState : TimePickerState,
+    onTimeSelected: (TimePickerState) -> Unit,
     onDismiss: () -> Unit
 ) {
-    val currentTime = Calendar.getInstance()
-    currentTime.time = initialDateAndTime
-    val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
-    val initialMinute = currentTime.get(Calendar.MINUTE)
-    val is24Hour = true
-
-    val timePickerState = rememberTimePickerState(initialHour, initialMinute, is24Hour)
-
     TimePickerDialog(
         onDismiss = { onDismiss() },
-        onConfirm = { onTimeSelected(convertHourAndMinuteToDate(timePickerState.hour, timePickerState.minute)) }
+        onConfirm = { onTimeSelected(timePickerState) }
     ) {
         TimePicker(
             state = timePickerState,
         )
     }
 }
+
 @Composable
 fun TimePickerDialog(
     onDismiss: () -> Unit,
@@ -142,9 +129,4 @@ fun TimePickerDialogPreview() {
     BPGTheme {
         TimePickerDialog({}, {}){ TimePicker(state = TimePickerState(14, 34, true)) }
     }
-}
-
-fun convertHourAndMinuteToDate(hour: Int, minute: Int): Date {
-    val millis =  (hour * 3600 + minute * 60) * 1000L
-    return Date(millis)
 }

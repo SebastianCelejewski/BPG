@@ -156,8 +156,7 @@ fun MeasurementCard(measurement: Measurement, onDelete: (Measurement) -> Unit, m
 fun MeasurementRow(measurement: Measurement) {
     Column {
         Row(
-            modifier = Modifier
-                .height(IntrinsicSize.Min)
+            modifier = Modifier.height(IntrinsicSize.Min)
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 DateElement(measurement)
@@ -168,24 +167,13 @@ fun MeasurementRow(measurement: Measurement) {
             Spacer(modifier = Modifier.width(10.dp))
             EmojiElement(measurement, Modifier.fillMaxHeight())
         }
-        val textComponents = mutableListOf<String>()
 
-        if (!measurement.weatherDescription.isNullOrEmpty()) {
-            textComponents.add(measurement.weatherDescription)
-        }
-        if (!measurement.periodStateDescription.isNullOrEmpty()) {
-            textComponents.add(measurement.periodStateDescription)
-        }
-        if (!measurement.locationDescription.isNullOrEmpty()) {
-            textComponents.add(measurement.locationDescription)
-        }
-        if (!measurement.durationDescription.isNullOrEmpty()) {
-            textComponents.add(measurement.durationDescription)
-        }
-        if (textComponents.size > 0) {
+        val metadataDescription = convertAllMetadataIntoSingleString(measurement)
+
+        if (metadataDescription != null) {
             Row(modifier = Modifier.padding(all = 0.dp)) {
                 Text(
-                    text = textComponents.joinToString(),
+                    text = metadataDescription,
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.onTertiary,
                     fontSize = 10.sp,
@@ -256,5 +244,30 @@ fun MeasurementListTableRowPreview() {
             ),
             onDelete = TODO(),
         )
+    }
+}
+
+fun convertAllMetadataIntoSingleString(measurement: Measurement): String? {
+    val textComponents = mutableListOf<String>()
+
+    if (!measurement.weatherDescription.isNullOrEmpty()) {
+        textComponents.add(measurement.weatherDescription)
+    }
+    if (!measurement.periodStateDescription.isNullOrEmpty()) {
+        textComponents.add(measurement.periodStateDescription)
+    }
+    if (!measurement.locationDescription.isNullOrEmpty()) {
+        textComponents.add(measurement.locationDescription)
+    }
+    if (!measurement.durationDescription.isNullOrEmpty()) {
+        textComponents.add(measurement.durationDescription)
+    }
+    if (measurement.comment.isNotEmpty()) {
+        textComponents.add(measurement.comment)
+    }
+    if (textComponents.size > 0) {
+        return textComponents.joinToString()
+    } else {
+        return null
     }
 }

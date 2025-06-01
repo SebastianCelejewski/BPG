@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -40,7 +41,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
-import pl.sebcel.bpg.extensions.stripDate
+import pl.sebcel.bpg.extensions.hour
+import pl.sebcel.bpg.extensions.minute
 import pl.sebcel.bpg.extensions.stripTime
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.util.Date
@@ -63,7 +65,7 @@ class MeasurementAddActivity : ComponentActivity() {
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
         var measurementDate by remember { mutableStateOf(Date().stripTime()) }
-        var measurementTime by remember { mutableStateOf(Date().stripDate()) }
+        var measurementTime = rememberTimePickerState(Date().hour(), Date().minute(), true)
         var pain by remember { mutableIntStateOf(0) }
         var weatherDescription by remember { mutableStateOf("") }
         var periodStateDescription by remember { mutableStateOf("") }
@@ -112,8 +114,11 @@ class MeasurementAddActivity : ComponentActivity() {
                             .padding(16.dp)
                             .verticalScroll(rememberScrollState())
                     ) {
+                        var selectedDateAndTime = measurementDate.time
+                        selectedDateAndTime += (measurementTime.hour * 3600 + measurementTime.minute * 60) * 1000;
+
                         MeasurementDatePicker(initialDateAndTime = measurementDate, onSelect = {measurementDate = it})
-                        MeasurementTimePicker(initialDateAndTime = measurementTime, onSelect = {measurementTime = it})
+                        MeasurementTimePicker(initialTimePickerState = measurementTime, onSelect = {measurementTime = it})
                         MeasurementHeadachePicker(onSelect = { pain = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_weather_label), onSelect = { weatherDescription = it })
                         MeasurementStringMetadata(modifier = Modifier, getString(R.string.measurement_period_state_label), onSelect = { periodStateDescription = it })
@@ -123,7 +128,7 @@ class MeasurementAddActivity : ComponentActivity() {
                         Button(onClick = {
                             viewModel.addMeasurement(
                                 Measurement(
-                                    date = Date(measurementDate.time + measurementTime.time),
+                                    date = Date(selectedDateAndTime),
                                     pain = pain,
                                     weatherDescription = weatherDescription,
                                     periodStateDescription = periodStateDescription,
