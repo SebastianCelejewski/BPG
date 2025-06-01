@@ -1,7 +1,6 @@
 package pl.sebcel.bpg.ui.measurementadd
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -11,7 +10,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +41,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import pl.sebcel.bpg.R
 import pl.sebcel.bpg.data.local.database.model.Measurement
 import pl.sebcel.bpg.extensions.stripDate
-import pl.sebcel.bpg.extensions.stripHours
+import pl.sebcel.bpg.extensions.stripTime
 import pl.sebcel.bpg.ui.theme.BPGTheme
 import java.util.Date
 
@@ -65,7 +62,7 @@ class MeasurementAddActivity : ComponentActivity() {
     @Composable
     fun AddNewMeasurement(viewModel: MeasurementAddViewModel = hiltViewModel()) {
 
-        var measurementDate by remember { mutableStateOf(Date().stripHours()) }
+        var measurementDate by remember { mutableStateOf(Date().stripTime()) }
         var measurementTime by remember { mutableStateOf(Date().stripDate()) }
         var pain by remember { mutableIntStateOf(0) }
         var weatherDescription by remember { mutableStateOf("") }

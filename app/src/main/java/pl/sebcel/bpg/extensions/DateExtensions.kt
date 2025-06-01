@@ -2,13 +2,16 @@ package pl.sebcel.bpg.extensions
 
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.TimeZone
 
-fun Date.stripHours() : Date {
-    val df = SimpleDateFormat.getDateInstance()
-    return df.parse(df.format(this))!!
+fun Date.stripTime() : Date {
+    val df = SimpleDateFormat.getDateInstance().also {it.timeZone = TimeZone.getTimeZone("UTC")}
+    val result = df.parse(df.format(this))!!
+    return result
 }
 
 fun Date.stripDate() : Date {
-    val df = SimpleDateFormat.getTimeInstance()
-    return df.parse(df.format(this))!!
+    val df = SimpleDateFormat("HH:mm:ss.SSS'Z'").also {it.timeZone = TimeZone.getTimeZone("UTC")}
+    val result = df.parse(df.format(this))!!
+    return result
 }
