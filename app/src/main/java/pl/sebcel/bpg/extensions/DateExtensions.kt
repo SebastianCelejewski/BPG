@@ -2,7 +2,6 @@
 
 package pl.sebcel.bpg.extensions
 
-import android.util.Log
 import androidx.compose.material3.ExperimentalMaterial3Api
 import java.text.SimpleDateFormat
 import java.util.Calendar

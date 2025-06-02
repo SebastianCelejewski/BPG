@@ -58,7 +58,7 @@ private val timeFormatter = SimpleDateFormat("HH:mm", Locale.getDefault())
 
 private val daysOfWeek = BpgApplication.instance.resources.getStringArray(R.array.days_of_the_week)
 
-private val emojis = arrayOf(R.drawable.smiling_face, R.drawable.neutral_face, R.drawable.sad_face, R.drawable.angry_face)
+private val emojis = arrayOf(R.drawable.smiling_face_320, R.drawable.neutral_face_320, R.drawable.sad_face_320, R.drawable.angry_face_320)
 private val emojiDescriptions = arrayOf(R.string.pain_description_0, R.string.pain_description_1, R.string.pain_description_2, R.string.pain_description_3)
 
 private val painDescriptions = PainDescriptions()
