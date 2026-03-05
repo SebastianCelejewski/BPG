@@ -69,7 +69,6 @@ Users can:
 
 - browse previous records
 - quickly review recent episodes
-- edit existing entries
 - delete incorrect entries
 
 ## Data export
@@ -88,13 +87,16 @@ For example:
 
 ## Recording a headache entry
 
-![Entry Screen](screenshots/entry.png)
+![Entry Screen](docs/new_entry.jpg)
 
 ## History view
 
-![History Screen](screenshots/history.png)
+![History Screen](docs/list_of_entries.jpg)
 
-*(Place screenshots inside a `/screenshots` directory in the repository.)*
+## Trivia
+
+![Trivia Screen](docs/trivia.jpg)
+
 
 ---
 
@@ -163,8 +165,3 @@ Possible directions for future development include:
 - improved reminder customization
 - full CI pipeline and automated testing
 
----
-
-# Build
-
-Clone the repository and open the project in **Android Studio**.
